@@ -1,0 +1,1 @@
+main { do until until := := ++ write / do bool [ % c // ++ - > b // integer d ( -- if g ] != != != end g , ,}

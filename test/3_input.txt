@@ -1,0 +1,1 @@
+main { // < [ ] { % then ( ! ) - + a a + % g - != / % main } "Hola" - > ++ - >= end c : % Hola" > > float read } do Hola" while float write c write bool do integer % "Hola read != != else end == <= bool g a /* { + repeat g := repeat == Hola" if bool := % ( / + != / */ ! float g , != -- c if g [ >= } - */ ( ! bool else integer >= Hola" write while f == >= end - + /* then <}

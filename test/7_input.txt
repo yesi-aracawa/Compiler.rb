@@ -1,0 +1,1 @@
+main { /* "Hola" ] integer -- == while "Hola % read bool */ write - == bool f ! a < ) - > */ b ) // write f then = + do ++ float d : d : [ integer >= := if - [ ++ ( if write ) end [ end { - { } write } := bool < [ : d ( if main -- % while + /* integer integer until repeat , main - ( >= "Hola ] { + /* : } end repeat > c / : d >= = ) % main c % float}

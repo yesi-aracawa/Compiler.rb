@@ -1,0 +1,4 @@
+main {
+	integer x, y, z;
+	float a, b, c;
+}

@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  ruby:
+    build: .
+    image: ruby_rgot
+    working_dir: /home
+    volumes:
+      - .:/home
+         #ruby generador.rb &&
+         #rgot -v --require ./sintacticoS ./test/sin_test.rb
+    command:
+       sh -c '
+         ruby main.rb
+      '
