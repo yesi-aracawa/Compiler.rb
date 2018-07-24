@@ -4,6 +4,7 @@ Nodo = Struct.new(:val,:tipo,:padre,:hijos) do #nodo estructura
     end
 end
 
+#primer commit prueba
 $tokens = []
 $leng = 0
 $pos = 0
