@@ -1,14 +1,28 @@
 programa
- :=
+ bool
+  d
+ bool
+  f
+ integer
+  p
+ integer
+  x
+  y
+  z
+ integer
+  z
+ float
   a
-   +
-    a
-    1
+  b
+  c
  :=
   v
    +
     v
     1
+ :=
+  q
+  182
  :=
   suma
   45
@@ -99,16 +113,68 @@ programa
     +
      a
      3
- if
-  >
+ :=
+  a
+   +
+    a
+    1
+ :=
+  c
+   -
+    c
+    1
+ :=
+  x
+  +
+   3
    4
-   2
+ do
   {
    :=
-    b
-    3.2
+    y
+    +
+     *
+      +
+       y
+       1
+      2
+     1
+   while
+    >
+     x
+     7
+    {
+     :=
+      x
+      +
+       6
+       /
+        *
+         /
+          8
+          9
+         8
+        3
+   while
+    ==
+     y
+     0
+    {
+     read
+      mas
+     write
+      Mi texto
+      x
+     write
+   while
+    ==
+     y
+     0
+    {
+     read
+      mas
  :=
-  y
-  +
-   y
-   1
+  m
+   +
+    m
+    1

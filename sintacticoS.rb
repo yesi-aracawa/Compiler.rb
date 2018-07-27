@@ -48,7 +48,7 @@ class Sintactico
         when "programa"
             validar("main")
             validar("{")
-            principal(este, "ld")
+            principal(este, "ld")#no regresa a ld si ya entró  a ls por lo tanto no muestra en el arbol las declaraciones que estan entre las sentencias*******************************************
             principal(este, "ls")
             validar("}")
             if $pos >= $leng
@@ -107,16 +107,8 @@ class Sintactico
                     validar("then")
                     este.hijos.push(principal(este, "{"))
                     if $tokens[$pos].val == "else"
-                        if $tokens[$pos+1].val == "{" #PUEDE SER "ELSE" Y AUN ASI ENTRA :S
-                            $pos = $pos + 1
-                            este.hijos.push(principal(este, "{"))
-                        else
-                            puts "error se esperaba { "
-                            $pos = $pos + 1
-                            while $tokens[$pos].tipo != "palReservada"
-                                $pos = $pos + 1
-                            end
-                        end
+                        validar("else")
+                        este.hijos.push(principal(este, "{"))
                     end
                 when "while"
                     validar("(")
@@ -125,7 +117,8 @@ class Sintactico
                     este.hijos.push(principal(este, "{"))
                 when "do"
                     este.hijos.push(principal(este, "{"))
-                    puts "ºººººº" + $pos.to_s + " " + $leng.to_s + " " + $tokens[$pos].val + " " + $tokens[($pos-2)..($pos+2)].to_s
+                    $error = $error + "Error: en pos: " + $pos.to_s + " tam " + $leng.to_s + " rango " + $tokens[$pos].val + " " + $tokens[($pos-2)..($pos+2)].to_s  + " linea " +$tokens[$pos].lin.to_s  + "\n"
+                   # puts "ºººººº" + $pos.to_s + " " + $leng.to_s + " " + $tokens[$pos].val + " " + $tokens[($pos-2)..($pos+2)].to_s
                     if  $tokens[$pos].val == "until"
                         $pos = $pos + 1
                         if  $tokens[$pos].val == "("
@@ -136,16 +129,20 @@ class Sintactico
                                 if $tokens[$pos].val == ";"
                                     $pos = $pos + 1
                                 else
-                                    puts "error en ; o )"
+                                    $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba un ';'  o ')'" + "  en " + "linea" +$tokens[$pos].lin.to_s  + "\n"
+                                    #puts "error en ; o )"
                                 end
                             else
-                                puts "error despues de ("
+                                $error = $error + "Error: despues de ( '"  + " linea " +$tokens[$pos].lin.to_s  + "\n"
+                               #puts "error despues de ("
                             end
                         else
-                            puts "error despues de until"
+                            $error = $error + "Error: despues de 'until' "  + " linea " +$tokens[$pos].lin.to_s  + "\n"
+                            #puts "error despues de until"
                         end
                     else
-                        puts "error en despues de {"
+                        $error = $error + "Error: despues de '{' "  + " linea " +$tokens[$pos].lin.to_s  + "\n"
+                       # puts "error en despues de {"
                     end
                 when "read"
                     este.hijos.push(Nodo.new( $tokens[$pos].val, $tokens[$pos].tipo, este, []))
@@ -153,7 +150,8 @@ class Sintactico
                     validar(";")
                 when "write"
                     if $tokens[$pos].tipo != "cadena"
-                        puts "Error: '" + $tokens[$pos].to_s + "' se esperaba una cadena"
+                        $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba una cadena '" + " en " + "linea" +$tokens[$pos].lin.to_s  + "\n"
+                        #puts "Error: '" + $tokens[$pos].to_s + "' se esperaba una cadena"
                         este = Nodo.new("","",este.padre,[])
                         while $pos < $leng-1 && $tokens[$pos].val != ";"
                             $pos = $pos + 1
@@ -168,7 +166,8 @@ class Sintactico
                                 este.hijos.push(principal(este, "exp"))
                             end
                         elsif  $tokens[$pos].val != ";"
-                            puts "Error: '" + $tokens[$pos].to_s + "' se esperaba ;"
+                            $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba un ';' " + "  en " + "linea" +$tokens[$pos].lin.to_s  + "\n"
+                           # puts "Error: '" + $tokens[$pos].to_s + "' se esperaba ;"
                             este = Nodo.new("","",este.padre,[])
                             while $pos < $leng && $tokens[$pos].val != ";"
                                 $pos = $pos + 1
@@ -210,7 +209,8 @@ class Sintactico
             este.val = $tokens[$pos].val
             $pos = $pos + 1
         else
-            puts "Error: '" + $tokens[$pos].to_s + "' no es un valor valido"
+            $error = $error + "Error: Valor no valido  :C :C en '" + "linea" +$tokens[$pos].lin.to_s  + "\n"
+            #puts "Error: '" + $tokens[$pos].to_s + "' no es un valor valido"
         end
         return este
     end
@@ -319,7 +319,8 @@ class Sintactico
             elsif rango[0].tipo == "identificador" || rango[0].tipo == "entero" || rango[0].tipo == "real" || rango[0].val == "true" or rango[0].val == "false"
                 este.val = rango[0].val
             else
-                puts"Error: '" + rango[0].to_s + "' no es un valor valido"
+                $error = $error + "Error: '" +  rango[0].to_s + "' no es valor valido '" + " linea" +$tokens[$pos].lin.to_s  + "\n"
+               # puts"Error: '" + + "' no es un valor valido"
             end
         end
         return este

@@ -1,9 +1,12 @@
 main{
-	a++;
+	bool d;
 	bool f;
+	integer p;
 	integer x,y,z;
+	integer z;
 	float a, b, c;
 	v++;
+	q:=182;
 	suma:=45;
 	x:=32.32;
 	x:=23;
@@ -18,14 +21,8 @@ main{
 	d:=34%5;
 	if (2>3) then{
         	y:=a+ 3;
-  	}else
-      		if(4>2) then {
-			b:=3.2;
-       		else{
-           		b:=5.0;
-		}
-      		y := y + 1;
-	}
+  	}
+	
 	a++;
 	c--;
 	x:=3+4;
@@ -36,7 +33,6 @@ main{
     		write x; 
    			mas:=36/7; 
    		}
-
  		
  		while(y==0){
     			read mas;
@@ -44,9 +40,7 @@ main{
     			write "";
 
 		}
-	}
 
-}
  		
  		while(y==0){
     			read mas;
@@ -54,6 +48,6 @@ main{
     			write 8%2+5;
 
 		}
-	}until(a==b);
-
+	}Until(a==b);
+ m++;
 }
