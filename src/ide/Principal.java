@@ -44,11 +44,11 @@ public class Principal extends javax.swing.JFrame {
     String programa;
     public Principal() {
         initComponents();
+       
         KeywordStyledDocument pop = new KeywordStyledDocument();//nuevo constructor
         PaneldeCodigo.setStyledDocument(pop);
         TextLineNumber lineNumber = new TextLineNumber(PaneldeCodigo);
         jScrollPane1.setRowHeaderView(lineNumber);
-
         renCol.setText(":");
         SaveBottom.setEnabled(false);
         SaveAsBottom.setEnabled(false);
@@ -99,6 +99,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_codigo = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         Arbol_Sin = new javax.swing.JTextArea();
+        jPanel_arbol = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         PaneldeCodigo = new javax.swing.JTextPane();
@@ -323,7 +324,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_lexicoLayout.setVerticalGroup(
             jPanel_lexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Léxico", jPanel_lexico);
@@ -336,7 +337,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_sintacticoLayout.setVerticalGroup(
             jPanel_sintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Sintáctico", jPanel_sintactico);
@@ -353,7 +354,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_semanticaLayout.setVerticalGroup(
             jPanel_semanticaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Semántica", jPanel_semantica);
@@ -376,6 +377,19 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTabbedPane_Ventana.addTab("Código Intermedio", jPanel_codigo);
+
+        javax.swing.GroupLayout jPanel_arbolLayout = new javax.swing.GroupLayout(jPanel_arbol);
+        jPanel_arbol.setLayout(jPanel_arbolLayout);
+        jPanel_arbolLayout.setHorizontalGroup(
+            jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 327, Short.MAX_VALUE)
+        );
+        jPanel_arbolLayout.setVerticalGroup(
+            jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 510, Short.MAX_VALUE)
+        );
+
+        jTabbedPane_Ventana.addTab("Arbol", jPanel_arbol);
 
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setToolTipText("");
@@ -866,8 +880,8 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-         jTabbedPane_Ventana.setComponentAt(1, tr.crearArbol());
-         jTabbedPane_Ventana.add("arbol",tr.crearArbol());
+         
+        
         //muestra arbol sintactico sin desplegar
         File arch2 = new File("sintactico.txt");
         try {
@@ -881,8 +895,9 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+    
+         jPanel_arbol = tr.crearArbol();
+         jTabbedPane_Ventana.setComponentAt(4, jPanel_arbol);
         //muestra el archivo de errores sintacticos
         File arch3 = new File("erroresS.txt");
         try {
@@ -977,6 +992,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel_Botones;
+    private javax.swing.JPanel jPanel_arbol;
     private javax.swing.JPanel jPanel_codigo;
     private javax.swing.JPanel jPanel_lexico;
     private javax.swing.JPanel jPanel_semantica;

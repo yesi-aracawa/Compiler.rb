@@ -40,6 +40,7 @@ class Sintactico
             #puts "Error: '" + $tokens[$pos].to_s + "' se esperaba '" + val + "'"
         end
         $pos = $pos + 1
+       
     end
     
     def principal(padre, gram)
@@ -220,10 +221,10 @@ class Sintactico
         len = padre.hijos.length
         if padre.val != "" 
             if esUltimo
-                str = str + "" + ident + "" + padre.val + "\n"
+                str = str + "" + ident + "" + padre.val + "\r\n"
                 espacio = " "
             else
-                str = str + "" + ident + "" + padre.val + "\n"
+                str = str + "" + ident + "" + padre.val + "\r\n"
                 espacio = " "
             end
         end

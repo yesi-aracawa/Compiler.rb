@@ -1,6 +1,1 @@
-Error: 'TOKEN: {[1m[32mval:'x'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:33[0m}' se esperaba una cadena ' en linea33
-Error: 'TOKEN: {[1m[32mval:'mas'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:34[0m}' se esperaba ';'linea34
-Error: 'TOKEN: {[1m[32mval:'x'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:47[0m}' se esperaba un ';'   en linea47
-Error: 'TOKEN: {[1m[32mval:'write'[0m, [1;36mtipo:palReservada[0m, [1m[31mlin:48[0m}' se esperaba ';'linea48
-Error: en pos: 243 tam 254 rango Until [TOKEN: {[1m[32mval:'}'[0m, [1;36mtipo:LlaveDer[0m, [1m[31mlin:50[0m}, TOKEN: {[1m[32mval:'}'[0m, [1;36mtipo:LlaveDer[0m, [1m[31mlin:51[0m}, TOKEN: {[1m[32mval:'Until'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:51[0m}, TOKEN: {[1m[32mval:'('[0m, [1;36mtipo:ParIzq[0m, [1m[31mlin:51[0m}, TOKEN: {[1m[32mval:'a'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:51[0m}] linea 51
-Error: despues de '{'  linea 51
+

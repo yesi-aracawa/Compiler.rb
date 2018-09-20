@@ -557,7 +557,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane3" alignment="0" pref="430" max="32767" attributes="0"/>
+                  <Component id="jScrollPane3" alignment="0" pref="510" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -596,7 +596,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="430" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="510" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -618,7 +618,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane10" alignment="0" pref="430" max="32767" attributes="0"/>
+                  <Component id="jScrollPane10" alignment="0" pref="510" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -681,6 +681,28 @@
               </SubComponents>
             </Container>
           </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="jPanel_arbol">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Arbol">
+                <Property name="tabTitle" type="java.lang.String" value="Arbol"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="327" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="510" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
         </Container>
       </SubComponents>
     </Container>
