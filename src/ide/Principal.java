@@ -39,8 +39,8 @@ public class Principal extends javax.swing.JFrame {
     int cont = 0;
     boolean band1=false;
     JScrollPane aux1 = null ;
-    TreeFromTextFileDemo tr = new TreeFromTextFileDemo();
     
+    JPanel p = new JPanel();
     String programa;
     public Principal() {
         initComponents();
@@ -312,6 +312,7 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(RunBottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jTextArea_lexico.setEditable(false);
         jTextArea_lexico.setColumns(20);
         jTextArea_lexico.setRows(5);
         jScrollPane3.setViewportView(jTextArea_lexico);
@@ -324,7 +325,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_lexicoLayout.setVerticalGroup(
             jPanel_lexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Léxico", jPanel_lexico);
@@ -337,7 +338,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_sintacticoLayout.setVerticalGroup(
             jPanel_sintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGap(0, 558, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Sintáctico", jPanel_sintactico);
@@ -354,11 +355,12 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_semanticaLayout.setVerticalGroup(
             jPanel_semanticaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+            .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Semántica", jPanel_semantica);
 
+        Arbol_Sin.setEditable(false);
         Arbol_Sin.setColumns(20);
         Arbol_Sin.setRows(5);
         jScrollPane6.setViewportView(Arbol_Sin);
@@ -371,9 +373,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_codigoLayout.setVerticalGroup(
             jPanel_codigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_codigoLayout.createSequentialGroup()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Código Intermedio", jPanel_codigo);
@@ -386,7 +386,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanel_arbolLayout.setVerticalGroup(
             jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGap(0, 558, Short.MAX_VALUE)
         );
 
         jTabbedPane_Ventana.addTab("Arbol", jPanel_arbol);
@@ -881,13 +881,15 @@ public class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
          
-        
+        Arbol_Sin.setText("");
         //muestra arbol sintactico sin desplegar
         File arch2 = new File("sintactico.txt");
         try {
             BufferedReader leer = new BufferedReader(new FileReader(arch2));
             String linea = leer.readLine();
+            System.out.println("*"+linea);
             while (linea != null) {
+                 System.out.println("->"+linea);
                 Arbol_Sin.append(linea + "\n");
                 linea = leer.readLine();
             }
@@ -895,15 +897,24 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-         jPanel_arbol = tr.crearArbol();
-         jTabbedPane_Ventana.setComponentAt(4, jPanel_arbol);
+
+        System.out.println("COMENZANDO______________________________________________________");
+            //panArb = tr.crearArbol();
+          TreeFromTextFileDemo tr = new TreeFromTextFileDemo();
+          jPanel_arbol = tr.crearArbol();
+          jTabbedPane_Ventana.setComponentAt(4, jPanel_arbol);
+        
+        //jTabbedPane_Ventana.setComponentAt(4, );
+        System.out.println("REVELANDO_________________________________________________________");
         //muestra el archivo de errores sintacticos
         File arch3 = new File("erroresS.txt");
         try {
             BufferedReader leer1 = new BufferedReader(new FileReader(arch3));
             String linea1 = leer1.readLine();
+            
+                
             while (linea1 != null) {
+               
                 jTextArea2.append(linea1 + "\n");
                 linea1 = leer1.readLine();
             }

@@ -557,7 +557,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane3" alignment="0" pref="510" max="32767" attributes="0"/>
+                  <Component id="jScrollPane3" alignment="0" pref="558" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -571,6 +571,7 @@
               <SubComponents>
                 <Component class="javax.swing.JTextArea" name="jTextArea_lexico">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
@@ -596,7 +597,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="510" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="558" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -618,7 +619,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane10" alignment="0" pref="510" max="32767" attributes="0"/>
+                  <Component id="jScrollPane10" alignment="0" pref="558" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -657,10 +658,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPane6" min="-2" pref="430" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
+                  <Component id="jScrollPane6" alignment="0" pref="558" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -674,6 +672,7 @@
               <SubComponents>
                 <Component class="javax.swing.JTextArea" name="Arbol_Sin">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>
@@ -699,7 +698,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="510" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="558" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

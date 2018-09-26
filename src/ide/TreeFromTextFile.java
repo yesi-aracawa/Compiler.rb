@@ -5,6 +5,13 @@
  */
 
 package ide;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
@@ -61,7 +68,7 @@ public class TreeFromTextFile {
     private void getRootNode() {
         try {
             //in = new BufferedReader(new FileReader("Path\\To\\File.txt"));
-            in = new BufferedReader(new FileReader("sintactico.txt")); //puede llevar c: y la direccion del archivo
+            in = new BufferedReader(new FileReader("sintactico.txt"));
             ln = new LineNumberReader(in);
 
             if (ln.getLineNumber() == 0) {
