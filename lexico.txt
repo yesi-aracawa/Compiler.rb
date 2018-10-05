@@ -1,7 +1,6 @@
 main{
-	int x,y,z;
+	integer x,y,z;
 	float a, b, c;
-x++++++++++++++++
 x++;
 	suma:=45;
 	x:=32.32;

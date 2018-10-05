@@ -13,7 +13,7 @@ end
 class Lexico
   
   def lexico(archivo)
-    $alex = 1
+    $lin = 1
     $num=/[0-9]/#expresion regular para un $numero
     $CaracterNoNum = /\D/
     $CaracterNoletraONum = /\W/
@@ -46,7 +46,6 @@ class Lexico
     $caracter = ''#pocisionar
     $tipo = ""#identificardocker
     $save = true
-    $lin = 0 #linea
     #puts $cad
     def valpospp
       $value = $value + $caracter
@@ -57,7 +56,6 @@ class Lexico
       # puts $value + " " + $tipo
       $value = "" #guardar
       $tipo = ""#identificar
-      $lin = 0
       $caracter = $cad[$pos]#pocisionar
       $err=0
       #puts $lengcad
@@ -92,7 +90,7 @@ class Lexico
         end
       elsif $caracter.bytes.to_a[0] == 10
         # puts ".--------POS" + ($pos).to_s
-        $alex = $alex +  1
+        $lin = $lin +  1
         $cont = $cont + 1
         $pos = $pos + 1
         next
@@ -232,10 +230,10 @@ class Lexico
         end# fin de case (switch)  
       end
       if $tipo != ""
-        tokens.push(TOKEN.new($value,$tipo,$alex))
-        $strtk = $strtk + " [" + $value + ", " + $tipo + "," + $alex.to_s + "]"+ "\n"
+        tokens.push(TOKEN.new($value,$tipo,$lin))
+        $strtk = $strtk + " [" + $value + ", " + $tipo + "," + $lin.to_s + "]"+ "\n"
       else
-        $cad2 = $cad2 + "Error: " + $cad[($pos-1)..($pos+3)].bytes.to_a.to_s + " :C en el caracter " + $cad[$pos-1] + " con " + $cad[$pos] + " posición: " + $pos.to_s + " linea " + $alex.to_s + "\n"
+        $cad2 = $cad2 + "Error: " + $cad[($pos-1)..($pos+3)].bytes.to_a.to_s + " :C en el caracter " + $cad[$pos-1] + " con " + $cad[$pos] + " posición: " + $pos.to_s + " linea " + $lin.to_s + "\n"
         $pos = $pos + 1
       end
     end
@@ -248,7 +246,7 @@ class Lexico
       f2.puts $cad2
     end
     
-    #puts $alex
+    #puts $lin
     if $cad2 != ""
       puts "Errores encontrados:\n" + $cad2
       exit

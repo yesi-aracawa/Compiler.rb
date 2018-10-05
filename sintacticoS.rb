@@ -1,6 +1,8 @@
-Nodo = Struct.new(:val,:tipo,:padre,:hijos) do #nodo estructura
+require './lexico.rb'
+
+Nodo = Struct.new(:token,:gram,:padre,:hijos) do #nodo estructura
     def to_s
-        "{ val: #{val}, tipo: #{tipo}, padre: #{padre.to_s}, hijos: #{hijos}"
+        "{ token: (#{token.val}, #{token.tipo}), gram: #{gram}, padre: #{padre.to_s}, hijos: #{hijos} }"
     end
 end
 
@@ -17,9 +19,9 @@ class Sintactico
         $leng = tokensArgs.length
         $tokens = tokensArgs
         
-        padre = Nodo.new('','', nil, [])
+        padre = Nodo.new(nil, '', nil, [])
         padre = principal(padre, "programa")
-        $arbol = printa(padre, "", true, "")
+        $arbol = printa(padre, "", "")
         #puts $arbol
         
         File.open('sintactico.txt', 'w') do |f1|
@@ -31,20 +33,23 @@ class Sintactico
         return padre, $error
     end
     
+    def EOF()
+        return $pos >= $leng-1
+    end
+
     def validar(val)
-        if $pos >= $leng
+        if EOF()
             #puts "Se encontro fin del archivo en lugar de '" + val + "'"
             #exit()
-        elsif $tokens[$pos].val != val
-            $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba '" + val + "'" + "linea" +$tokens[$pos].lin.to_s  + "\n"
+        elsif $tokens[$pos]['val'] != val
+            $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba '" + val + "'" + "linea" +$tokens[$pos]['lin'].to_s  + "\n"
             #puts "Error: '" + $tokens[$pos].to_s + "' se esperaba '" + val + "'"
         end
         $pos = $pos + 1
-       
     end
     
     def principal(padre, gram)
-        este = Nodo.new(gram,'', padre, [])
+        este = Nodo.new(TOKEN.new(gram, '', $tokens[$pos]['lin']), gram, padre, [])
         case gram
         when "programa"
             validar("main")
@@ -52,62 +57,60 @@ class Sintactico
             principal(este, "ld")#no regresa a ld si ya entró  a ls por lo tanto no muestra en el arbol las declaraciones que estan entre las sentencias*******************************************
             principal(este, "ls")
             validar("}")
-            if $pos >= $leng
-                #puts "Se cerraron todas las llaves, a partir del token " + $tokens[$pos].to_s + " ya no se ejecuto"
-            end
         when "ld"
-            while $pos < $leng-1 && ($tokens[$pos].val == "float" || $tokens[$pos].val == "integer" || $tokens[$pos].val == "bool")
-                padre.hijos.push(principal(padre, "tipo"))
+            while !EOF() && ["float", "integer", "bool"].include?($tokens[$pos]['val'])
+                padre['hijos'].push(principal(padre, "declaracion"))
             end
-        when "tipo"
-            este.val = $tokens[$pos].val
+        when "declaracion"
+            este.token = $tokens[$pos]
             $pos = $pos + 1
-            #**LV
-            while $pos < $leng-1 && $tokens[$pos].tipo == "identificador"
-                este.hijos.push(Nodo.new($tokens[$pos].val, $tokens[$pos].tipo, este, []))
+            principal(este, "lv")
+            validar(";")
+        when "lv"
+            while !EOF() && $tokens[$pos]['tipo'] == "identificador"
+                padre['hijos'].push(Nodo.new($tokens[$pos], $tokens[$pos]['tipo'], padre, []))
                 $pos = $pos + 1
-                if $tokens[$pos].val != ";"
+                if $tokens[$pos]['val'] != ";"
                     validar(",")
                 end
             end
-            #******terminaLV
-            validar(";")       
         when "ls"
-            while $pos < $leng - 1 && $tokens[$pos].val != "}" && $tokens[$pos].val != ";"
-                padre.hijos.push(principal(padre, "sentencia"))
+            while !EOF() && !(["}", ";"].include?($tokens[$pos]['val']))
+                padre['hijos'].push(principal(padre, "sentencia"))
             end
         when "sentencia"
-            if $tokens[$pos].tipo == "identificador"
-                este.val=":="
-                este.hijos.push(Nodo.new($tokens[$pos].val, $tokens[$pos].tipo, este, []))
+            # TODO
+            if $tokens[$pos]['tipo'] == "identificador"
+                este.token = TOKEN.new(":=", "", $tokens[$pos]['lin'])
+                este.hijos.push(Nodo.new(TOKEN.new($tokens[$pos]['val'], "", $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este, []))
                 $pos = $pos + 1
-                if $tokens[$pos].val == "--" 
-                    este.hijos[0].hijos.push(Nodo.new("-", $tokens[$pos].tipo, este.hijos[0], [Nodo.new($tokens[$pos-1].val, $tokens[$pos-1].tipo, este.hijos[0].hijos[0], []),Nodo.new("1","entero", este.hijos[0].hijos[0], [])]))
+                if $tokens[$pos]['val'] == "--" 
+                    este.hijos[0].hijos.push(Nodo.new(TOKEN.new("-", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
                     $pos = $pos + 1
-                elsif $tokens[$pos].val == "++"
-                    este.hijos[0].hijos.push(Nodo.new("+", $tokens[$pos].tipo, este.hijos[0], [Nodo.new($tokens[$pos-1].val, $tokens[$pos-1].tipo, este.hijos[0].hijos[0], []),Nodo.new("1","entero", este.hijos[0].hijos[0], [])]))
+                elsif $tokens[$pos]['val'] == "++"
+                    este.hijos[0].hijos.push(Nodo.new(TOKEN.new("+", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
                     $pos = $pos + 1
-                elsif $tokens[$pos].val == ":="
+                elsif $tokens[$pos]['val'] == ":="
                     $pos = $pos + 1
                     este.hijos.push(principal(este,"exp"))
                 else
                     este = Nodo.new("","",este.padre,[])
-                    while $pos < $leng -1 && $tokens[$pos].val != ";"
+                    while !EOF() && $tokens[$pos]['val'] != ";"
                         $pos = $pos + 1
                     end
                 end
                 validar(";")
             else
-                este.val = $tokens[$pos].val
+                este.token = $tokens[$pos]
                 $pos = $pos + 1
-                case $tokens[$pos-1].val
+                case $tokens[$pos-1]['val']
                 when "if"
                     validar("(")
                     este.hijos.push(principal(este, "exp"))
                     validar(")")
                     validar("then")
                     este.hijos.push(principal(este, "{"))
-                    if $tokens[$pos].val == "else"
+                    if $tokens[$pos]['val'] == "else"
                         validar("else")
                         este.hijos.push(principal(este, "{"))
                     end
@@ -118,59 +121,55 @@ class Sintactico
                     este.hijos.push(principal(este, "{"))
                 when "do"
                     este.hijos.push(principal(este, "{"))
-                    $error = $error + "Error: en pos: " + $pos.to_s + " tam " + $leng.to_s + " rango " + $tokens[$pos].val + " " + $tokens[($pos-2)..($pos+2)].to_s  + " linea " +$tokens[$pos].lin.to_s  + "\n"
-                   # puts "ºººººº" + $pos.to_s + " " + $leng.to_s + " " + $tokens[$pos].val + " " + $tokens[($pos-2)..($pos+2)].to_s
-                    if  $tokens[$pos].val == "until"
+                    $error = $error + "Error: en pos: " + $pos.to_s + " tam " + $leng.to_s + " rango " + $tokens[$pos]['val'] + " " + $tokens[($pos-2)..($pos+2)].to_s  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
+                   # puts "ºººººº" + $pos.to_s + " " + $leng.to_s + " " + $tokens[$pos]['val'] + " " + $tokens[($pos-2)..($pos+2)].to_s
+                    if  $tokens[$pos]['val'] == "until"
                         $pos = $pos + 1
-                        if  $tokens[$pos].val == "("
+                        if  $tokens[$pos]['val'] == "("
                             $pos = $pos + 1
                             este.hijos.push(principal(este, "exp"))
-                            if  $tokens[$pos].val == ")"
+                            if  $tokens[$pos]['val'] == ")"
                                 $pos = $pos + 1
-                                if $tokens[$pos].val == ";"
+                                if $tokens[$pos]['val'] == ";"
                                     $pos = $pos + 1
                                 else
-                                    $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba un ';'  o ')'" + "  en " + "linea" +$tokens[$pos].lin.to_s  + "\n"
-                                    #puts "error en ; o )"
+                                    $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba un ';'  o ')'" + "  en " + "linea" +$tokens[$pos]['lin'].to_s  + "\n"
                                 end
                             else
-                                $error = $error + "Error: despues de ( '"  + " linea " +$tokens[$pos].lin.to_s  + "\n"
-                               #puts "error despues de ("
+                                $error = $error + "Error: despues de ( '"  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
                             end
                         else
-                            $error = $error + "Error: despues de 'until' "  + " linea " +$tokens[$pos].lin.to_s  + "\n"
-                            #puts "error despues de until"
+                            $error = $error + "Error: despues de 'until' "  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
                         end
                     else
-                        $error = $error + "Error: despues de '{' "  + " linea " +$tokens[$pos].lin.to_s  + "\n"
-                       # puts "error en despues de {"
+                        $error = $error + "Error: despues de '{' "  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
                     end
                 when "read"
-                    este.hijos.push(Nodo.new( $tokens[$pos].val, $tokens[$pos].tipo, este, []))
+                    este.hijos.push(Nodo.new( $tokens[$pos], $tokens[$pos]['tipo'], este, []))
                     $pos = $pos + 1
                     validar(";")
                 when "write"
-                    if $tokens[$pos].tipo != "cadena"
-                        $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba una cadena '" + " en " + "linea" +$tokens[$pos].lin.to_s  + "\n"
+                    if $tokens[$pos]['tipo'] != "cadena"
+                        $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba una cadena '" + " en " + "linea" +$tokens[$pos]['lin'].to_s  + "\n"
                         #puts "Error: '" + $tokens[$pos].to_s + "' se esperaba una cadena"
-                        este = Nodo.new("","",este.padre,[])
-                        while $pos < $leng-1 && $tokens[$pos].val != ";"
+                        este = Nodo.new(nil,"",este.padre,[])
+                        while !EOF() && $tokens[$pos]['val'] != ";"
                             $pos = $pos + 1
                         end
                         $pos = $pos + 1
                     else
-                        este.hijos.push(Nodo.new($tokens[$pos].val, $tokens[$pos].tipo,este, []))
+                        este.hijos.push(Nodo.new($tokens[$pos], $tokens[$pos]['tipo'],este, []))
                         $pos = $pos + 1
-                        if $tokens[$pos].val == ","
-                            while  $tokens[$pos].val == ","
+                        if $tokens[$pos]['val'] == ","
+                            while !EOF() && $tokens[$pos]['val'] == ","
                                 $pos = $pos + 1
                                 este.hijos.push(principal(este, "exp"))
                             end
-                        elsif  $tokens[$pos].val != ";"
-                            $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba un ';' " + "  en " + "linea" +$tokens[$pos].lin.to_s  + "\n"
+                        elsif  $tokens[$pos]['val'] != ";"
+                            $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba un ';' " + "  en " + "linea" +$tokens[$pos]['lin'].to_s  + "\n"
                            # puts "Error: '" + $tokens[$pos].to_s + "' se esperaba ;"
                             este = Nodo.new("","",este.padre,[])
-                            while $pos < $leng && $tokens[$pos].val != ";"
+                            while !EOF() && $tokens[$pos]['val'] != ";"
                                 $pos = $pos + 1
                             end
                             $pos = $pos + 1
@@ -179,7 +178,7 @@ class Sintactico
                     validar(";")
                 else
                     este = Nodo.new("","",este.padre,[])
-                    while $pos < $leng -1 && $tokens[$pos].val != ";"
+                    while !EOF() && $tokens[$pos]['val'] != ";"
                         $pos = $pos + 1
                     end
                     $pos = $pos + 1
@@ -192,10 +191,10 @@ class Sintactico
         when "exp"
             r = $pos
             paren = 0
-            while $pos < $leng-1 && $tokens[$pos].val != ';'
-                if $tokens[$pos].val=="("
+            while !EOF() && $tokens[$pos]['val'] != ';'
+                if $tokens[$pos]['val']=="("
                     paren = paren+1
-                elsif $tokens[$pos].val==")"
+                elsif $tokens[$pos]['val']==")"
                     paren = paren-1
                     if paren == -1
                         break
@@ -207,123 +206,77 @@ class Sintactico
             fin = $pos - 1
             este = inorden(este.padre,$tokens[r..fin],"exp")
         when "rel", "opsum", "opmul"
-            este.val = $tokens[$pos].val
+            este.token = $tokens[$pos]
             $pos = $pos + 1
         else
-            $error = $error + "Error: Valor no valido  :C :C en '" + "linea" +$tokens[$pos].lin.to_s  + "\n"
-            #puts "Error: '" + $tokens[$pos].to_s + "' no es un valor valido"
+            $error = $error + "Error: Valor no valido  :C :C en '" + "linea" +$tokens[$pos]['lin'].to_s  + "\n"
         end
         return este
     end
-    
-    def printa(padre, ident, esUltimo, str)
-        espacio = ""
-        len = padre.hijos.length
-        if padre.val != "" 
-            if esUltimo
-                str = str + "" + ident + "" + padre.val + "\r\n"
-                espacio = " "
-            else
-                str = str + "" + ident + "" + padre.val + "\r\n"
-                espacio = " "
-            end
-        end
-        i = 0
-        while i < len-1
-            str = printa(padre.hijos[i], ident + espacio, false, str)
-            i = i + 1
-        end 
-        if len > 0
-            str = printa(padre.hijos[len-1], ident + espacio, true, str)
-        end
-        return str
-    end
-    
+
     def inorden(padre, rango, gram)
-        paren=0
-        este=Nodo.new("", "", padre, [])
+        este = Nodo.new(TOKEN.new('', '', $tokens[$pos]['lin']), '', padre, [])
         if rango.length < 1
             return este
         end
-        i=rango.length-1
-        bandera=false
+        paren = 0
+        bandera = false
+        i = rango.length-1
+        
+        arr_aux1_aux2 = []
         case gram
         when "exp"
-            #puts "----->" + rango.to_s
-            while i>=0 
-                if rango[i].val==")"
-                    paren = paren + 1
-                elsif rango[i].val=="("
-                    paren = paren-1
-                elsif rango[i].val == ">"||rango[i].val == ">="||rango[i].val == "<"||rango[i].val == "<="||rango[i].val == "=="||rango[i].val == "!="
-                    if paren == 0
-                        bandera = true
-                        break
-                    end
-                end
-                i = i-1
-            end
-            if bandera
-                este.hijos=[]
-                este.hijos.push(inorden(este, rango[0..(i-1)], "exps"))
-                este.val=rango[i].val
-                este.hijos.push(inorden(este, rango[(i+1)..(rango.length-1)], "exps"))
-            else
-                este=inorden(este, rango, "exps")
-            end
+            arr_aux1_aux2 = ['val', 'exps', 'exps', [">", ">=", "<", "<=", "==", "!="]]
         when "exps"
-            while i>=0
-                if rango[i].val==")"
-                    paren = paren + 1
-                elsif rango[i].val=="("
-                    paren = paren-1
-                elsif rango[i].val == "+"||rango[i].val == "-"
-                    if paren == 0
-                        bandera = true
-                        break
-                    end
-                end
-                i = i-1
-            end
-            if bandera
-                este.hijos.push(inorden(este, rango[0..(i-1)], "exps"))
-                este.val=rango[i].val
-                este.hijos.push(inorden(este, rango[(i+1)..(rango.length-1)], "term"))
-            else
-                este=inorden(este, rango, "term")
-            end
+            arr_aux1_aux2 = ['val', 'exps', 'term', ["+", "-"]]
         when "term"
-            while i>=0 
-                if rango[i].val==")"
-                    paren = paren + 1
-                elsif rango[i].val=="("
-                    paren = paren-1
-                elsif rango[i].val == "*"||rango[i].val == "/"||rango[i].val == "%"
-                    if paren == 0
-                        bandera = true
-                        break
-                    end
-                end
-                i = i-1
-            end
-            if bandera
-                este.hijos.push(inorden(este, rango[0..(i-1)], "term"))
-                este.val=rango[i].val
-                este.hijos.push(inorden(este, rango[(i+1)..(rango.length-1)], "fact"))
-            else
-                este=inorden(este, rango, "fact")
-            end
+            arr_aux1_aux2 = ['val', 'term', 'fact', ["*", "/", "%"]]
         when "fact"
-            cont = 0
-            if rango[0].val == "(" && rango[rango.length-1].val == ")"
-                este.hijos.push(inorden(este, rango[1..(rango.length-2)], "exps"))    
-            elsif rango[0].tipo == "identificador" || rango[0].tipo == "entero" || rango[0].tipo == "real" || rango[0].val == "true" or rango[0].val == "false"
-                este.val = rango[0].val
+            arr_aux1_aux2 = ['tipo', 'exps', '',    ["bool", "real", "entero", "identificador"]]
+        end
+    
+        while i>=0 
+            if rango[i]['val'] == ')'
+                paren = paren + 1
+            elsif rango[i]['val'] == '('
+                paren = paren - 1
+            elsif arr_aux1_aux2[3].include?(rango[i][arr_aux1_aux2[0]])
+                if paren == 0
+                    bandera = true
+                    break
+                end
+            end
+            i = i-1
+        end
+    
+        if gram != 'fact'
+            if bandera
+                este.hijos.push(inorden(este, rango[0..(i-1)], arr_aux1_aux2[1]))
+                este.token = rango[i]
+                este.hijos.push(inorden(este, rango[(i+1)..(rango.length-1)], arr_aux1_aux2[2]))
             else
-                $error = $error + "Error: '" +  rango[0].to_s + "' no es valor valido '" + " linea" +$tokens[$pos].lin.to_s  + "\n"
-               # puts"Error: '" + + "' no es un valor valido"
+                este = inorden(este, rango, arr_aux1_aux2[2])
+            end
+        else
+            if rango[0]['val'] == '(' && rango[rango.length-1]['val'] == ')'
+                este.hijos.push(inorden(este, rango[1..(rango.length-2)], arr_aux1_aux2[1]))
+            else
+                este.token = rango[0]
             end
         end
         return este
+    end
+
+    def printa(padre, ident, str)
+        espacio = ""
+        if padre['token'] != nil && padre['token']['val'] != nil && padre['token']['val'] != ""
+            str = str + "" + ident + "" + padre['token']['val'] + "\r\n"
+            espacio = " "
+        end
+        
+        padre['hijos'].each do | hijo |
+            str = printa(hijo, ident + espacio, str)
+        end
+        return str
     end
 end

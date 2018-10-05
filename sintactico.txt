@@ -1,4 +1,8 @@
 programa
+ integer
+  x
+  y
+  z
  :=
   x
    +
