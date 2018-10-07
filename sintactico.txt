@@ -3,11 +3,10 @@ programa
   x
   y
   z
- :=
-  x
-   +
-    x
-    1
+ float
+  a
+  b
+  c
  :=
   suma
   45
@@ -99,11 +98,23 @@ programa
      a
      3
   {
- :=
-  y
-  +
-   y
-   1
+   if
+    >
+     4
+     2
+    {
+     :=
+      b
+      3.2
+    {
+     :=
+      b
+      5.0
+   :=
+    y
+    +
+     y
+     1
  :=
   a
    +
@@ -146,13 +157,40 @@ programa
           9
          8
         3
+     write
+      x
+     :=
+      mas
+      /
+       36
+       7
+   while
+    ==
+     y
+     0
+    {
+     read
+      mas
+     write
+      Mi texto
+      x
+     write
+   while
+    ==
+     y
+     0
+    {
+     read
+      mas
+     write
+      Mi texto
+      x
+     write
+      +
+       %
+        8
+        2
+       5
   ==
    y
    5
- while
-  ==
-   y
-   0
-  {
-   read
-    mas

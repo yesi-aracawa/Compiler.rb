@@ -1,7 +1,1 @@
-Error: 'TOKEN: {[1m[32mval:'if'[0m, [1;36mtipo:palReservada[0m, [1m[31mlin:20[0m}' se esperaba '{'linea20
-Error: 'TOKEN: {[1m[32mval:'x'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:32[0m}' se esperaba una cadena ' en linea32
-Error: 'TOKEN: {[1m[32mval:'mas'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:33[0m}' se esperaba ';'linea33
-Error: 'TOKEN: {[1m[32mval:';'[0m, [1;36mtipo:puntoComa[0m, [1m[31mlin:34[0m}' se esperaba '}'linea34
-Error: en pos: 211 tam 241 rango until [TOKEN: {[1m[32mval:'}'[0m, [1;36mtipo:LlaveDer[0m, [1m[31mlin:34[0m}, TOKEN: {[1m[32mval:';'[0m, [1;36mtipo:puntoComa[0m, [1m[31mlin:34[0m}, TOKEN: {[1m[32mval:'until'[0m, [1;36mtipo:palReservada[0m, [1m[31mlin:36[0m}, TOKEN: {[1m[32mval:'('[0m, [1;36mtipo:ParIzq[0m, [1m[31mlin:36[0m}, TOKEN: {[1m[32mval:'y'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:36[0m}] linea 36
-Error: 'TOKEN: {[1m[32mval:'x'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:39[0m}' se esperaba un ';'   en linea39
-Error: 'TOKEN: {[1m[32mval:'write'[0m, [1;36mtipo:palReservada[0m, [1m[31mlin:40[0m}' se esperaba ';'linea40
+Error: en pos: 256 tam 264 rango until [TOKEN: {[1m[32mval:'}'[0m, [1;36mtipo:LlaveDer[0m, [1m[31mlin:46[0m}, TOKEN: {[1m[32mval:'}'[0m, [1;36mtipo:LlaveDer[0m, [1m[31mlin:47[0m}, TOKEN: {[1m[32mval:'until'[0m, [1;36mtipo:palReservada[0m, [1m[31mlin:47[0m}, TOKEN: {[1m[32mval:'('[0m, [1;36mtipo:ParIzq[0m, [1m[31mlin:47[0m}, TOKEN: {[1m[32mval:'y'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:47[0m}] linea 47

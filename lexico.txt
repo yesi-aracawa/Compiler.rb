@@ -1,7 +1,6 @@
 main{
 	integer x,y,z;
 	float a, b, c;
-x++;
 	suma:=45;
 	x:=32.32;
 	x:=23;
@@ -15,28 +14,35 @@ x++;
 	y:=14.54;
 	d:=34%5;
 	if (2>3) then{
-        y:=a+ 3;
-  	}else
-      if(4>2) then
-             {b:=3.2;
-       else
-           b:=5.0;}
-       y := y + 1;
+        	y:=a+ 3;
+  	}else{
+      		if(4>2) then {
+			b:=3.2;
+       		}else{
+           		b:=5.0;
+		    }
+      		y := y + 1;
+	}
 	a++;
 	c--;
 	x:=3+4;
 	do{
    		y:=(y + 1)* 2 + 1;
    		while (x > 7){ 
-    		x:=6 + 8 / 9 * 8 / 3;   
-    		write x; 
-   			mas:=36/7; 
-   		};
+    	         x:=6 + 8 / 9 * 8 / 3;   
+    		     write "x"; 
+   		     mas:=36/7; 
+   		}
+ 		while(y==0){
+    		    read mas;
+    		    write "Mi texto", x;
+    	                            write "";
+		}
+ 		while(y==0){
+    			read mas;
+    			write "Mi texto", x;
+    			write "", 8%2+5;
 
- 	until(y==5);
- 	while(y==0){
-    	read mas;
-    	write "Mi texto"x;
-    	write 8%2+5
-};
+		}
+	}until(y==5);
 }
