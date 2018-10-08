@@ -1,0 +1,5 @@
+Error no fue declarado suma Linea: 4
+Error no fue declarado d Linea: 15
+Error no fue declarado mas Linea: 34
+Error no fue declarado mas Linea: 37
+Error no fue declarado mas Linea: 42

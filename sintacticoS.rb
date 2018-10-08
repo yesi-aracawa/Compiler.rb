@@ -1,10 +1,5 @@
+require './tipos.rb'
 require './lexico.rb'
-
-Nodo = Struct.new(:token,:gram,:padre,:hijos) do #nodo estructura
-    def to_s
-        "{ token: (#{token.val}, #{token.tipo}), gram: #{gram}, padre: #{padre.to_s}, hijos: #{hijos} }"
-    end
-end
 
 #primer commit prueba
 $tokens = []
@@ -82,7 +77,7 @@ class Sintactico
             # TODO
             if $tokens[$pos]['tipo'] == "identificador"
                 este.token = TOKEN.new(":=", "", $tokens[$pos]['lin'])
-                este.hijos.push(Nodo.new(TOKEN.new($tokens[$pos]['val'], "", $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este, []))
+                este.hijos.push(Nodo.new($tokens[$pos], $tokens[$pos]['tipo'], este, []))
                 $pos = $pos + 1
                 if $tokens[$pos]['val'] == "--" 
                     este.hijos[0].hijos.push(Nodo.new(TOKEN.new("-", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
