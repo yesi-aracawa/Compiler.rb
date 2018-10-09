@@ -11,7 +11,7 @@ import javax.swing.JTree;
 
 public class TreeFromTextFileDemo_1 {
 
-public TreeFromTextFile1 tr = new TreeFromTextFile1();
+public TreeFromTextFile1 tr2 = new TreeFromTextFile1();
 /*
 public void main(String[] args) {
     JFrame frame = new JFrame("Demo | Creating JTree From File.txt");
@@ -41,7 +41,7 @@ public void main(String[] args) {
     public JPanel crearArbol(){
         System.out.println("creararbol");
         JPanel panel = new JPanel();
-        JTree t = tr.getTree();
+        JTree t = tr2.getTree();
         expande(t,0,t.getRowCount());
         panel.add(new JScrollPane(t), BorderLayout.CENTER);
         panel.setVisible(true);

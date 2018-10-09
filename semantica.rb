@@ -137,7 +137,7 @@ class Semantica
 
   def asigna_valor(este, args)
     # si nast no tiene valor
-
+    
     if este['token']['tipo'] == 'identificador'
       if $mapa.has_key?(este['token']['val']) # existe en el mapa?
         este['val'] = $mapa.fetch(este['token']['val'])['val'] # asigna valor actual
@@ -178,7 +178,10 @@ class Semantica
           $error_sem = $error_sem + "Error en: " + este['token']['val'] + " no se puede realizar por un valor 0. Linea: " + este['token']['lin'].to_s + "\n"
           return
         end
-
+        if este['token']['val'] == '%' && tipo_compatible(este['hijos'][0], este['hijos'][1], [["float", "integer"], ["integer", "integer"], ["float", "float"], ["integer", "float"]]) #el modulo siempre es entero
+          este['dato'] = "integer"
+          este['val'] = eval(este['hijos'][0]['val'].to_i.to_s + este['token']['val'] + este['hijos'][1]['val'].to_i.to_s).to_i
+        end
         if tipo_compatible(este['hijos'][0], este['hijos'][1], [["float", "integer"], ["integer", "integer"], ["float", "float"]])
           if este['hijos'][0]['dato'] == "float" || este['hijos'][1]['dato'] == "float"
             este['dato'] = "float"
@@ -189,8 +192,7 @@ class Semantica
           end
         end
       when '<', '<=', '==', '!=', '>=', '>'
-        puts este['token']['val'].to_s
-       # if tipo_compatible(este['hijos'][0],este['hijos'][1], [["bool", "bool"]])
+        # if tipo_compatible(este['hijos'][0],este['hijos'][1], [["bool", "bool"]])
           este['dato'] = 'bool'
           if este['token']['val'] == '=='
             if este['hijos'][0]['val'] == este['hijos'][1]['val']
@@ -200,7 +202,6 @@ class Semantica
             end
           else
             este['val'] = eval(este['hijos'][0]['val'].to_s + este['token']['val'] + este['hijos'][1]['val'].to_s)
-            puts este['val'].to_s + "____"
           end
         #end
       else # tipos no compatibles

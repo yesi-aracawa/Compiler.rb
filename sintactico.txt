@@ -18,6 +18,11 @@ programa
   a
   9
  :=
+  c
+   +
+    c
+    1
+ :=
   d
   <
    1
@@ -106,7 +111,9 @@ programa
     2
    *
     15
-    4
+    +
+     4
+     1
  :=
   y
   14.54
@@ -165,8 +172,8 @@ programa
     +
      *
       /
-       8
-       2
+       10
+       9
       2
      1
    while
@@ -179,12 +186,12 @@ programa
        /
         *
          /
-          8
+          7
           9
          8
         3
      write
-      Mi texto 1
+      mi texto
       x
      :=
       mas
