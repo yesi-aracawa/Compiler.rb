@@ -253,7 +253,7 @@ class Sintactico
             end
         else
             if rango[0]['val'] == '(' && rango[rango.length-1]['val'] == ')'
-                este.hijos.push(inorden(este, rango[1..(rango.length-2)], arr_aux1_aux2[1]))
+                este = inorden(este, rango[1..(rango.length-2)], arr_aux1_aux2[1])
             else
                 este.token = rango[0]
             end
@@ -262,15 +262,12 @@ class Sintactico
     end
 
     def printa(padre, ident, str)
-        espacio = ""
-        if padre['token'] != nil && padre['token']['val'] != nil && padre['token']['val'] != ""
-            str = str + "" + ident + "" + padre['token']['val'] + "\r\n"
-            espacio = " "
-        end
+        str = str + "" + ident + "" + padre['token']['val'].to_s + "\r\n"
+        espacio = " "
         
         padre['hijos'].each do | hijo |
             str = printa(hijo, ident + espacio, str)
         end
         return str
-    end
+      end
 end

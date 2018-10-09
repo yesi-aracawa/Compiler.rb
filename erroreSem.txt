@@ -1,23 +1,23 @@
+Error la variable: x ya había sido declarada, error en Linea: 2
+Error la variable: z ya había sido declarada, error en Linea: 3
 Error la variable: a ya había sido declarada, error en Linea: 5
 Error la variable: d ya había sido declarada, error en Linea: 5
-Error no fue declarado suma Linea: 11
-Error no fue declarado suma Linea: 11
-Error no fue declarado suma Linea: 13
+Error no fue declarado suma Linea: 12
+Error no fue declarado suma Linea: 12
+Error no fue declarado suma Linea: 14
 Error no fue declarado mas Linea: 43
 Error no fue declarado mas Linea: 47
 Error de asignación de valor en: integer Linea: 2
 Error de asignación de valor en: float Linea: 3
 Error de asignación de valor en: bool Linea: 4
 Error de asignación de valor en: integer Linea: 5
-Error en: / no se puede realizar por un valor 0. Linea: 9
-Error de asignación de valor en: / Linea: 9
-Error en: := el tipo no corresponde en las variables. Linea: 9
+Error en: / no se puede realizar por un valor 0. Linea: 10
+Error de asignación de valor en: / Linea: 10
 Error en: := el tipo no corresponde en las variables. Linea: 10
-Error de asignación de valor en: := Linea: 11
-Error en: := el tipo no corresponde en las variables. Linea: 12
+Error en: := el tipo no corresponde en las variables. Linea: 11
+Error de asignación de valor en: := Linea: 12
 Error en: := el tipo no corresponde en las variables. Linea: 13
-Error de asignación de valor en: * Linea: 18
-Error en: := el tipo no corresponde en las variables. Linea: 18
+Error en: := el tipo no corresponde en las variables. Linea: 14
 Error en: := el tipo no corresponde en las variables. Linea: 21
 Error en: := el tipo no corresponde en las variables. Linea: 22
 Error en: := el tipo no corresponde en las variables. Linea: 24
@@ -29,8 +29,6 @@ Error de asignación de valor en: { Linea: 26
 Error de asignación de valor en: if Linea: 23
 Error de asignación de valor en: := Linea: 35
 Error de asignación de valor en: := Linea: 36
-Error de asignación de valor en: * Linea: 39
-Error en: := el tipo no corresponde en las variables. Linea: 39
 Error de asignación de valor en: Mi texto 1 Linea: 42
 Error de asignación de valor en: write Linea: 42
 Error en: := el tipo no corresponde en las variables. Linea: 43

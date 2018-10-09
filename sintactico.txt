@@ -3,15 +3,20 @@ programa
   x
   y
   z
+  x
  float
   a
   b
   c
+  z
  bool
   d
  integer
   a
   d
+ :=
+  a
+  9
  :=
   d
   <
@@ -80,15 +85,6 @@ programa
       2
     34
    1
- :=
-  x
-  *
-   -
-    5
-    3
-   /
-    8
-    2
  :=
   y
   -
@@ -168,9 +164,9 @@ programa
     y
     +
      *
-      +
-       y
-       1
+      /
+       8
+       2
       2
      1
    while
