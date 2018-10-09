@@ -8,5 +8,6 @@ sem = Semantica.new
 
 $tokens = l.lexico('lexico.txt')
 $arbol, error = s.init($tokens)
+#puts $arbol
 sem.init($arbol)
 #$arbol2, errorSem = sem.init($arbol)

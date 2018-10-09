@@ -6,18 +6,17 @@ $error_sem = ""
 #de la manera en que aparece en el to_s es de la forma que debe estar para ser reconocido como tabla en el IDE
 class Semantica
   Simbolo = Struct.new(:nombre, :loc, :val, :tipo_d, :lineas) do
+    # def to_s
+    #   "| nombre: %10s | loc: %3s | val: %5s | tipo: %8s | %60s |" % [nombre, loc, val, tipo_d, lineas]
+    # end
     def to_s
-      "| nombre: %10s | loc: %3s | val: %5s | tipo: %8s | %60s |" % [nombre, loc, val, tipo_d, lineas]
+       "%10s | %3s | %5s | %8s | %60s" % [nombre, loc, val, tipo_d, lineas]
     end
   end
 
   Nast = Struct.new(:padre, :hijos, :token, :gram, :dato, :val) do
     def to_s
-      if val != nil && dato != nil
-        return token['val'] + " " + dato + "(" + val.to_s + ")"
-      else 
-        return token['val'] + " ()"
-      end
+      return token['val'] + " " + dato.to_s + "(" + val.to_s + ")"
     end
   end
 
@@ -30,20 +29,34 @@ class Semantica
     
     preorden(ast, :asigna_tipo, '')
     postorden(ast, :asigna_valor, '')
+    puts printa(ast, '', '')
     
     #REALIZAR SEMANTICA & ARBOL CON ATRIBUTOS
     #metodsem(ast)
-    puts printa(ast, '', '')
+    arbol_semantico = printa(ast, '', '')
 
-
+    hash_table = ""
     $mapa.each_pair do |s, v|
       puts v.to_s
+      hash_table = hash_table + v.to_s + "\n"
     end
 
-    #retornar errores
-    File.open('erroreSem.txt', 'w') do |f1|
-      f1.puts $error_sem.to_s 
-    end
+
+    #Pasar el arbol semantico a un archivo
+    File.open('semantico.txt', 'w') do |f1|
+      f1.puts arbol_semantico.to_s 
+   end
+
+   #pasar tabla hash a un archivo
+   File.open('hash.txt', 'w') do |f2|
+     f2.puts hash_table.to_s 
+   end
+
+   #retornar errores
+   File.open('erroreSem.txt', 'w') do |f3|
+     f3.puts $error_sem.to_s 
+   end
+
   end
 
   def asigna_tipo(este, tipo_padre) #valor
@@ -51,30 +64,24 @@ class Semantica
     tk_val = este['token']['val']
     tipos = ["integer", "float", "bool"]
 
-    if este['token']['val'] == 'y'
-      print "\n"
-    end
-
-    if tk_tipo == "palReservada" && tipos.include?(tk_val) # || tk_tipo == "cadena"
-      return tk_val
-    elsif tk_tipo == "identificador" #si eres identificador, eres una variable
+    if tk_tipo == 'identificador' #si eres identificador, eres una variable
       if $mapa.has_key?(tk_val) #ya fue declarada?
-        if tipos.include?(tipo_padre) #se esta volviendo a declarar
+        if tipos.include?(este['padre']['token']['val']) #se esta volviendo a declarar
           # TODO: error
-          $error_sem = $error_sem + "Error > n < " + este['token']['val'] + " ya había sido declarada, error en Linea " + este['token']['lin'].to_s + "\n"
-        elsif este['padre']['token']['val'] == ':=' #si fuiste declarada y estas siendo asignada?
-          este['dato'] = $mapa.fetch(tk_val, '')['tipo_d'] #agregamos su tipo de dato
+          $error_sem = $error_sem + "Error la variable: " + este['token']['val'] + " ya había sido declarada, error en Linea: " + este['token']['lin'].to_s + "\n"        else#if este['padre']['token']['val'] == ':=' #si fuiste declarada y estas siendo asignada?
+          este['dato'] = $mapa.fetch(tk_val, '*')['tipo_d'] #agregamos su tipo de dato
           $mapa[tk_val]['lineas'].push(este['token']['lin']) #agregamos la linea donde aparece
-        else #sino estas siendo asignada estás siendo usada?
-          este['dato'] = $mapa.fetch(tk_val, '')['tipo_d'] #agregamos su tipo de dato
-          $mapa[tk_val]['lineas'].push(este['token']['lin']) #agregamos la linea donde aparece
+        #else #sino estas siendo asignada estás siendo usada?
+          #este['dato'] = $mapa.fetch(tk_val, '')['tipo_d'] #agregamos su tipo de dato
+          # $mapa[tk_val]['lineas'].push(este['token']['lin']) #agregamos la linea donde aparece
         end
+      elsif este['padre']['token']['val'] != '' && tipos.include?(este['padre']['token']['val'])
+          #si no fuiste declarada, estas siendo declarada? integer a:= a + b
+          este['dato'] = este['padre']['token']['val']
+          tk_aux = TOKEN.new('false', este['dato'], 0)
+          $mapa.store(tk_val, Simbolo.new(tk_val, $loc, valor_inicial(tk_aux), este['dato'], [este['token']['lin']]))
+          $loc += 1
       # WARNING: integer a := 1 /  integer a := a + b (no esta definido en la gramatica)
-      elsif tipos.include?(tipo_padre) #si no fuiste declarada, estas siendo declarada? integer a:= a + b
-        $mapa.store(tk_val, Simbolo.new(tk_val, $loc, val_in(tipo_padre), tipo_padre, [este['token']['lin']]))
-        este['dato'] = tipo_padre
-        este['val'] = val_in(tipo_padre)
-        $loc += 1
       elsif false #también estas siendo asignada? #integer a:= a + b
       elsif false #también siendo usada? integer a:= c+b
       else #si no fuiste declarada ni lo estas siendo, entonces es error de declaración
@@ -83,13 +90,13 @@ class Semantica
       end
     elsif ['true', 'false'].include?(tk_val)
       este['dato'] = 'bool'
-      este['val'] = tk_val == 'true' # truco para signarle su dato booleano
+      #este['val'] = tk_val == 'true'
     elsif tk_tipo == 'real'
       este['dato'] = 'float'
-      este['val'] = tk_val.to_f
+      #este['val'] = tk_val.to_f
     elsif tk_tipo == 'entero'
       este['dato'] = 'integer'
-      este['val'] = tk_val.to_i
+      #este['val'] = tk_val.to_i
     else
       return ['']
     end
@@ -104,21 +111,25 @@ class Semantica
     end
   end
 
-  def val_in(tipo_dato)
-    case tipo_dato
-    when "integer"
+  def valor_inicial(token)
+    case token['tipo']
+    when 'palReservada', 'bool'
+      if token['val'] == 'true'
+        return true
+      elsif token['val'] == 'false'
+        return false
+      end
+    when 'entero', 'integer'
       return 0
-    when "float"
+    when 'real', 'float'
       return 0.0
-    when "bool"
-      return false
     end
   end
 
   def postorden(padre,func,arg) # asignar valores
     #recorrido
     padre.hijos.each do |hijo|
-      preorden(hijo, func, arg)
+      postorden(hijo, func, arg)
     end
     #analisis
     arg = send(func,padre,arg)
@@ -129,57 +140,81 @@ class Semantica
 
     if este['token']['tipo'] == 'identificador'
       if $mapa.has_key?(este['token']['val']) # existe en el mapa?
-        este['val'] = $mapa[este['token']['val']]['val'] # asigna valor actual
+        este['val'] = $mapa.fetch(este['token']['val'])['val'] # asigna valor actual
       end
+    elsif ['true', 'false'].include?(este['token']['val'])
+      este['val'] = este['token']['val'] == 'true'
+    elsif este['token']['tipo'] == 'real'
+      este['val'] = este['token']['val'].to_f
+    elsif este['token']['tipo'] == 'entero'
+      este['val'] = este['token']['val'].to_i
     elsif realiza_op?(este)# es un operador? hacer operacion
+    
+    else
+      $error_sem = $error_sem + "Error de asignación de valor en: " + este['token']['val'] + " Linea: " + este['token']['lin'].to_s + "\n"
     end
   end
 
   def realiza_op?(este)
-    if tipo_compatible(este['hijos'][0], este['hijos'][1]) # comprueba tipo
+    if este['hijos'].length > 1
       case este['token']['val']
       when ':='
+        if este['hijos'][0]['dato'] != este['hijos'][1]['dato']
+          #TODO: error
+          $error_sem = $error_sem + "Error en: " + este['token']['val'] + " el tipo no corresponde en las variables. Linea: " + este['token']['lin'].to_s + "\n"
+        else
         este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
+        end
         if $mapa.has_key?(este['hijos'][0]['token']['val'])
           $mapa[este['hijos'][0]['token']['val']]['val'] = este['hijos'][0]['val'] #(cambiar el valor en el mapa)
         end
-      when '+'
-        # print este['hijos'][0]['dato'], " + ", este['hijos'][1]['dato'], " - "
-        # print este['hijos'][0]['val'].class, " + ", este['hijos'][1]['val'].class, " - "
-        # print este['hijos'][0]['val'], " + ", este['hijos'][1]['val'], "\n"
-        este['hijos'].each do |hijo|
-          print hijo['val'], " "
+      when '+', '-', '*', '/', '%'
+        if (este['token']['val'] == '/' || este['token']['val'] == '%') && (este['hijos'][1]['val'].to_i.to_s == '0' || este['hijos'][1]['val'].to_f.to_s == '0.0')
+          #TODO: error
+          $error_sem = $error_sem + "Error en: " + este['token']['val'] + " no se puede realizar por un valor 0. Linea: " + este['token']['lin'].to_s + "\n"
+          return
         end
-        print "\n"
-        # este['val'] = este['hijos'][0]['val'] + este['hijos'][1]['val']
-      when '-'
-      when '*'
-      when '/'
 
-      when '%'
-      when '<'
-      when '<='
-      when '=='
-      when '!='
-      when '>='
-      when '>'
-      else
+        if tipo_compatible(este['hijos'][0], este['hijos'][1], [["float", "integer"], ["integer", "integer"], ["float", "float"]])
+          if este['hijos'][0]['dato'] == "float" || este['hijos'][1]['dato'] == "float"
+            este['dato'] = "float"
+            este['val'] = eval(este['hijos'][0]['val'].to_f.to_s + este['token']['val'] + este['hijos'][1]['val'].to_f.to_s).to_f
+          else
+            este['dato'] = "integer"
+            este['val'] = eval(este['hijos'][0]['val'].to_i.to_s + este['token']['val'] + este['hijos'][1]['val'].to_i.to_s).to_i
+          end
+        end
+      when '<', '<=', '==', '!=', '>=', '>'
+        puts este['token']['val'].to_s
+       # if tipo_compatible(este['hijos'][0],este['hijos'][1], [["bool", "bool"]])
+          este['dato'] = 'bool'
+          if este['token']['val'] == '=='
+            if este['hijos'][0]['val'] == este['hijos'][1]['val']
+              este['val'] = true
+            else
+              este['val'] = false
+            end
+          else
+            este['val'] = eval(este['hijos'][0]['val'].to_s + este['token']['val'] + este['hijos'][1]['val'].to_s)
+            puts este['val'].to_s + "____"
+          end
+        #end
+      else # tipos no compatibles
         return false
       end
-      return true
-    else # tipos no compatibles
+    else
       return false
     end
+    return true
   end
 
-  def tipo_compatible(nast1, nast2)
-    if nast1 != nil && nast2 != nil
-      if nast1['dato'] != '' && nast2['dato'] != ''
-        # print nast1['dato'], " ", nast2['dato'], "\n"
-        
-        #TODO: Reglas
-
-        return nast1['dato'] == nast2['dato']
+  def tipo_compatible(nast1, nast2, array)
+    if nast1 != nil && nast2 != nil && nast1['dato'] != '' && nast2['dato'] != ''
+      #TODO: Reglas
+      array.each do | regla |
+        if nast1['dato'] == regla[0] && nast2['dato'] == regla[1]
+          return true
+        end
       end
     end
     return false

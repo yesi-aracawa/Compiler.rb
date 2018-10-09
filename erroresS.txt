@@ -1,1 +1,1 @@
-Error: en pos: 256 tam 264 rango until [TOKEN: {[1m[32mval:'}'[0m, [1;36mtipo:LlaveDer[0m, [1m[31mlin:46[0m}, TOKEN: {[1m[32mval:'}'[0m, [1;36mtipo:LlaveDer[0m, [1m[31mlin:47[0m}, TOKEN: {[1m[32mval:'until'[0m, [1;36mtipo:palReservada[0m, [1m[31mlin:47[0m}, TOKEN: {[1m[32mval:'('[0m, [1;36mtipo:ParIzq[0m, [1m[31mlin:47[0m}, TOKEN: {[1m[32mval:'y'[0m, [1;36mtipo:identificador[0m, [1m[31mlin:47[0m}] linea 47
+

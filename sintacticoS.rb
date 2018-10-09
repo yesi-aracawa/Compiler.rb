@@ -17,7 +17,6 @@ class Sintactico
         padre = Nodo.new(nil, '', nil, [])
         padre = principal(padre, "programa")
         $arbol = printa(padre, "", "")
-        #puts $arbol
         
         File.open('sintactico.txt', 'w') do |f1|
             f1.puts $arbol.to_s 
@@ -116,7 +115,7 @@ class Sintactico
                     este.hijos.push(principal(este, "{"))
                 when "do"
                     este.hijos.push(principal(este, "{"))
-                    $error = $error + "Error: en pos: " + $pos.to_s + " tam " + $leng.to_s + " rango " + $tokens[$pos]['val'] + " " + $tokens[($pos-2)..($pos+2)].to_s  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
+                    #$error = $error + "Error: en pos: " + $pos.to_s + " tam " + $leng.to_s + " rango " + $tokens[$pos]['val'] + " " + $tokens[($pos-2)..($pos+2)].to_s  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
                    # puts "ºººººº" + $pos.to_s + " " + $leng.to_s + " " + $tokens[$pos]['val'] + " " + $tokens[($pos-2)..($pos+2)].to_s
                     if  $tokens[$pos]['val'] == "until"
                         $pos = $pos + 1
