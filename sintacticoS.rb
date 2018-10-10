@@ -79,10 +79,10 @@ class Sintactico
                 este.hijos.push(Nodo.new($tokens[$pos], $tokens[$pos]['tipo'], este, []))
                 $pos = $pos + 1
                 if $tokens[$pos]['val'] == "--" 
-                    este.hijos[0].hijos.push(Nodo.new(TOKEN.new("-", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
+                    este.hijos.push(Nodo.new(TOKEN.new("-", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
                     $pos = $pos + 1
                 elsif $tokens[$pos]['val'] == "++"
-                    este.hijos[0].hijos.push(Nodo.new(TOKEN.new("+", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
+                    este.hijos.push(Nodo.new(TOKEN.new("+", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
                     $pos = $pos + 1
                 elsif $tokens[$pos]['val'] == ":="
                     $pos = $pos + 1
@@ -104,10 +104,8 @@ class Sintactico
                     validar(")")
                     validar("then")
                     este.hijos.push(principal(este, "{"))
-                    if $tokens[$pos]['val'] == "else"
-                        validar("else")
-                        este.hijos.push(principal(este, "{"))
-                    end
+                    validar("else")
+                    este.hijos.push(principal(este, "{"))
                 when "while"
                     validar("(")
                     este.hijos.push(principal(este, "exp"))
@@ -117,27 +115,11 @@ class Sintactico
                     este.hijos.push(principal(este, "{"))
                     #$error = $error + "Error: en pos: " + $pos.to_s + " tam " + $leng.to_s + " rango " + $tokens[$pos]['val'] + " " + $tokens[($pos-2)..($pos+2)].to_s  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
                    # puts "ºººººº" + $pos.to_s + " " + $leng.to_s + " " + $tokens[$pos]['val'] + " " + $tokens[($pos-2)..($pos+2)].to_s
-                    if  $tokens[$pos]['val'] == "until"
-                        $pos = $pos + 1
-                        if  $tokens[$pos]['val'] == "("
-                            $pos = $pos + 1
-                            este.hijos.push(principal(este, "exp"))
-                            if  $tokens[$pos]['val'] == ")"
-                                $pos = $pos + 1
-                                if $tokens[$pos]['val'] == ";"
-                                    $pos = $pos + 1
-                                else
-                                    $error = $error + "Error: '" + $tokens[$pos].to_s + "' se esperaba un ';'  o ')'" + "  en " + "linea" +$tokens[$pos]['lin'].to_s  + "\n"
-                                end
-                            else
-                                $error = $error + "Error: despues de ( '"  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
-                            end
-                        else
-                            $error = $error + "Error: despues de 'until' "  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
-                        end
-                    else
-                        $error = $error + "Error: despues de '{' "  + " linea " +$tokens[$pos]['lin'].to_s  + "\n"
-                    end
+                    validar("until")
+                    validar("(")
+                    este.hijos.push(principal(este, "exp"))
+                    validar(")")
+                    validar(";")
                 when "read"
                     este.hijos.push(Nodo.new( $tokens[$pos], $tokens[$pos]['tipo'], este, []))
                     $pos = $pos + 1

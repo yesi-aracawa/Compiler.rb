@@ -159,15 +159,19 @@ class Semantica
     if este['hijos'].length > 1
       case este['token']['val']
       when ':='
-        if este['hijos'][0]['dato'] != este['hijos'][1]['dato']
-          if este['hijos'][0]['dato'] == 'float' && (este['hijos'][1]['dato'] == 'integer' || este['hijos'][1]['dato'] == 'float' ) #promoción
-            este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
-          else
-            #TODO: error
-            $error_sem = $error_sem + "Error en: " + este['token']['val'] + " el tipo no corresponde en las variables. Linea: " + este['token']['lin'].to_s + "\n"
-          end
+        puts este['hijos'][1]['val'].to_s + "tipo " + este['hijos'][1]['dato'].to_s + "\n"
+        #este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
+        if tipo_compatible(este['hijos'][0], este['hijos'][1], [["float", "integer"], ["integer", "integer"], ["float", "float"]])
+            if este['hijos'][0]['dato'] == "float" || este['hijos'][1]['dato'] == "float"
+              este['dato'] = "float"
+              este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
+            else
+              este['dato'] = "integer"
+              este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
+            end
         else
-          este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
+          #TODO: error
+          $error_sem = $error_sem + "Error en: " + este['token']['val'] + " el tipo no corresponde en las variables. Linea: " + este['token']['lin'].to_s + "\n"
         end
         if $mapa.has_key?(este['hijos'][0]['token']['val'])
           $mapa[este['hijos'][0]['token']['val']]['val'] = este['hijos'][0]['val'] #(cambiar el valor en el mapa)

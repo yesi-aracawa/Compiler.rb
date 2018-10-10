@@ -54,7 +54,7 @@ public class TreeFromTextFile1 {
             in = new BufferedReader(new FileReader("semantico.txt"));
 
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+               // System.out.println(line);
             }
             in.close();
         } catch (Exception e) {

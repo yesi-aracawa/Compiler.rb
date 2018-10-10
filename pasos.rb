@@ -65,7 +65,12 @@ class Semantica
         end
       end
     end
-  
+    if $tokens[$pos]['val'] == "--" 
+      este.hijos.push(Nodo.new(TOKEN.new("-", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
+      $pos = $pos + 1
+  elsif $tokens[$pos]['val'] == "++"
+      este.hijos.push(Nodo.new(TOKEN.new("+", $tokens[$pos]['tipo'], $tokens[$pos]['lin']), $tokens[$pos]['tipo'], este.hijos[0], [Nodo.new($tokens[$pos-1], $tokens[$pos-1]['tipo'], este.hijos[0].hijos[0], []),Nodo.new(TOKEN.new('1', 'entero', $tokens[$pos]['lin']), 'entero', este.hijos[0].hijos[0], [])]))
+      $pos = $pos + 1
     def preorden(padre, func, params) #tipo
       #analisis de tipo
       send(func,padre,params)

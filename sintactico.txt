@@ -9,19 +9,21 @@ programa
   b
   c
   z
+  y
  bool
-  d
- integer
-  a
-  d
+  m
+  l
+ :=
+  m
+  !=
+   2
+   9
+ :=
+  c
+  45
  :=
   a
   9
- :=
-  c
-   +
-    c
-    1
  :=
   d
   <
@@ -47,9 +49,9 @@ programa
    150.0
  :=
   suma
-   +
-    suma
-    1
+  +
+   suma
+   1
  :=
   x
   32.32
@@ -109,11 +111,11 @@ programa
    /
     8
     2
-   *
-    15
-    +
+   +
+    *
+     15
      4
-     1
+    1
  :=
   y
   14.54
@@ -152,19 +154,41 @@ programa
      1
  :=
   a
-   +
-    a
-    1
+  +
+   a
+   1
  :=
   c
-   -
-    c
-    1
+  -
+   c
+   1
  :=
   x
   +
    3
    4
+ while
+  d
+  {
+   :=
+    x
+    +
+     6
+     /
+      *
+       /
+        7
+        9
+       8
+      3
+ write
+  mi texto
+  x
+ :=
+  mas
+  /
+   36
+   7
  do
   {
    :=
@@ -177,44 +201,28 @@ programa
       2
      1
    while
-    d
+    ==
+     y
+     0
     {
+     read
+      mas
      :=
       x
       +
-       6
-       /
-        *
-         /
-          7
-          9
+       3
+       *
+        /
          8
-        3
-     write
-      mi texto
-      x
-     :=
-      mas
-      /
-       36
-       7
+         3
+        -
+         5
+         3
   ==
    y
    5
- while
-  ==
-   y
-   0
-  {
-   read
-    mas
-   write
-    Mi texto 2
-    35.5
-   write
-    Mi texto 3
-    +
-     %
-      8
-      2
-     5
+ write
+  Mi texto 2
+  35.5
+ write
+  Mi texto 3

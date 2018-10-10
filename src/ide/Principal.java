@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -367,7 +368,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_lexico.setLayout(jPanel_lexicoLayout);
         jPanel_lexicoLayout.setHorizontalGroup(
             jPanel_lexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
         );
         jPanel_lexicoLayout.setVerticalGroup(
             jPanel_lexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,7 +381,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_sintactico.setLayout(jPanel_sintacticoLayout);
         jPanel_sintacticoLayout.setHorizontalGroup(
             jPanel_sintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
         );
         jPanel_sintacticoLayout.setVerticalGroup(
             jPanel_sintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,7 +399,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_codigo.setLayout(jPanel_codigoLayout);
         jPanel_codigoLayout.setHorizontalGroup(
             jPanel_codigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
         );
         jPanel_codigoLayout.setVerticalGroup(
             jPanel_codigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -411,7 +412,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_arbol.setLayout(jPanel_arbolLayout);
         jPanel_arbolLayout.setHorizontalGroup(
             jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
         );
         jPanel_arbolLayout.setVerticalGroup(
             jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -424,7 +425,7 @@ public class Principal extends javax.swing.JFrame {
         arbolSemantico.setLayout(arbolSemanticoLayout);
         arbolSemanticoLayout.setHorizontalGroup(
             arbolSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
         );
         arbolSemanticoLayout.setVerticalGroup(
             arbolSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -987,7 +988,7 @@ public class Principal extends javax.swing.JFrame {
           jPanel_arbol = tr.crearArbol();
           jTabbedPane_Ventana.setComponentAt(1, jPanel_arbol);
           
-          TreeFromTextFileDemo_1 tr2 = new TreeFromTextFileDemo_1();
+        TreeFromTextFileDemo_1 tr2 = new TreeFromTextFileDemo_1();
           arbolSemantico = tr2.crearArbol();
           jTabbedPane_Ventana.setComponentAt(4, arbolSemantico);
         

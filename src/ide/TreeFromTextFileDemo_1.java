@@ -44,6 +44,7 @@ public void main(String[] args) {
         JTree t = tr2.getTree();
         expande(t,0,t.getRowCount());
         panel.add(new JScrollPane(t), BorderLayout.CENTER);
+        panel.setSize(500,350);
         panel.setVisible(true);
         return panel;
     }
