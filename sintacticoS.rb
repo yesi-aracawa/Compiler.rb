@@ -134,7 +134,8 @@ class Sintactico
                         end
                         $pos = $pos + 1
                     else
-                        este.hijos.push(Nodo.new($tokens[$pos], $tokens[$pos]['tipo'],este, []))
+                        este['hijos'].push(Nodo.new($tokens[$pos], $tokens[$pos]['tipo'],este, []))
+                        puts $tokens[$pos].to_s + "+++++++++++++++++++++++++++"
                         $pos = $pos + 1
                         if $tokens[$pos]['val'] == ","
                             while !EOF() && $tokens[$pos]['val'] == ","
@@ -251,5 +252,5 @@ class Sintactico
             str = printa(hijo, ident + espacio, str)
         end
         return str
-      end
+    end
 end

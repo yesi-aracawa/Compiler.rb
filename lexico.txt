@@ -48,12 +48,14 @@ main{
 		while(y==0){
     	                           read mas;
 		  x:=3+8/3*(5-3);
+		write "mi texto", 35.0%2;
 	                        }        
    	
  	}until(y==5);
+	
+  	write "mi texto2", x%3;
+	
 
-	write "Mi texto 2", 35.5;
-    	write "Mi texto 3";
 
  
 }

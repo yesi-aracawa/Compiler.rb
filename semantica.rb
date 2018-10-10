@@ -164,10 +164,10 @@ class Semantica
         if tipo_compatible(este['hijos'][0], este['hijos'][1], [["float", "integer"], ["integer", "integer"], ["float", "float"]])
             if este['hijos'][0]['dato'] == "float" || este['hijos'][1]['dato'] == "float"
               este['dato'] = "float"
-              este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
+              este['hijos'][0]['val'] = este['hijos'][1]['val'].to_f # asigna nuevo valor
             else
               este['dato'] = "integer"
-              este['hijos'][0]['val'] = este['hijos'][1]['val'] # asigna nuevo valor
+              este['hijos'][0]['val'] = este['hijos'][1]['val'].to_i# asigna nuevo valor
             end
         else
           #TODO: error

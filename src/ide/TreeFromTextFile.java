@@ -93,6 +93,8 @@ public class TreeFromTextFile {
         for (int i = 0; i < haystack.length(); i++) {
             if (haystack.charAt(i) == ' ') {
                 count++;
+            }else{
+                break;
             }
         }
         return count;

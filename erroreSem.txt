@@ -35,12 +35,12 @@ Error de asignación de valor en: mi texto Linea: 44
 Error de asignación de valor en: write Linea: 44
 Error en: := el tipo no corresponde en las variables. Linea: 45
 Error de asignación de valor en: read Linea: 49
+Error de asignación de valor en: mi texto Linea: 51
+Error de asignación de valor en: write Linea: 51
 Error de asignación de valor en: { Linea: 48
 Error de asignación de valor en: while Linea: 48
 Error de asignación de valor en: { Linea: 46
 Error de asignación de valor en: do Linea: 46
-Error de asignación de valor en: Mi texto 2 Linea: 55
-Error de asignación de valor en: write Linea: 55
-Error de asignación de valor en: Mi texto 3 Linea: 56
+Error de asignación de valor en: mi texto2 Linea: 56
 Error de asignación de valor en: write Linea: 56
 Error de asignación de valor en: programa Linea: 1
