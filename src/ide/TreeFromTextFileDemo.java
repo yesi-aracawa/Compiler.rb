@@ -1,6 +1,5 @@
 package ide;
 
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import javax.swing.JFrame;
@@ -10,8 +9,6 @@ import javax.swing.JTree;
 
 
 public class TreeFromTextFileDemo {
-
-public TreeFromTextFile tr = new TreeFromTextFile();
 /*
 public void main(String[] args) {
     JFrame frame = new JFrame("Demo | Creating JTree From File.txt");
@@ -38,7 +35,8 @@ public void main(String[] args) {
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
     }*/
-    public JPanel crearArbol(){
+    public JPanel crearArbol(String name){
+        TreeFromTextFile tr = new TreeFromTextFile(name);
         System.out.println("creararbol");
         JPanel panel = new JPanel();
         JTree t = tr.getTree();
@@ -50,11 +48,11 @@ public void main(String[] args) {
     }
     
     public void expande(JTree arbol,int inicio,int fin){
-    for (int i = inicio; i < fin; i++) {
-        arbol.expandRow(i);
+        for (int i = inicio; i < fin; i++) {
+            arbol.expandRow(i);
+        }
+        if (arbol.getRowCount()!=fin){
+            expande(arbol,fin,arbol.getRowCount());
+        }
     }
-    if (arbol.getRowCount()!=fin){
-        expande(arbol,fin,arbol.getRowCount());
-    }
-}
 }

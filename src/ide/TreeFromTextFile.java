@@ -31,16 +31,16 @@ public class TreeFromTextFile {
     private LineNumberReader ln;
     private String line;    //value of a line in the text file
     private String root;    //value to be used for the root Node of our JTree                         
-    private String filename = "sintactico.txt";
+    private String filename;
     private String encoding = "UTF-8";
     private DefaultMutableTreeNode top;
     private JTree tree;
 
-    public TreeFromTextFile() {
+    public TreeFromTextFile(String name) {
+        filename = name;
         getRootNode();
         top = new DefaultMutableTreeNode(root);
         createNodes(top);
-
         //Create a tree that allows one selection at a time.
         tree = new JTree(top);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -51,7 +51,7 @@ public class TreeFromTextFile {
     public void readFile() {
         try {
             //in = new BufferedReader(new FileReader("Path\\To\\File.txt"));
-            in = new BufferedReader(new FileReader("sintactico.txt"));
+            in = new BufferedReader(new FileReader(filename));
 
             while ((line = in.readLine()) != null) {
                 System.out.println(line);
@@ -68,7 +68,7 @@ public class TreeFromTextFile {
     private void getRootNode() {
         try {
             //in = new BufferedReader(new FileReader("Path\\To\\File.txt"));
-            in = new BufferedReader(new FileReader("sintactico.txt"));
+            in = new BufferedReader(new FileReader(filename));
             ln = new LineNumberReader(in);
 
             if (ln.getLineNumber() == 0) {
@@ -117,7 +117,7 @@ public class TreeFromTextFile {
 
         try {
             //in = new BufferedReader(new FileReader("TheTextFile.txt"));
-            in = new BufferedReader(new FileReader("sintactico.txt"));
+            in = new BufferedReader(new FileReader(filename));
             while ((line = in.readLine()) != null) {
                 if (countOccurrences(line, ' ') == 1) {
                     //JOptionPane.showMessageDialog(null, "entre a 1");

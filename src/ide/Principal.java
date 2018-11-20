@@ -81,12 +81,12 @@ public class Principal extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         errsem = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         jPanel_Botones = new javax.swing.JPanel();
         NewFileBottom = new javax.swing.JButton();
         OpenBottom = new javax.swing.JButton();
@@ -130,6 +130,8 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1000, 350));
 
+        jTabbedPane_VentanaErrores.setToolTipText("");
+
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -147,7 +149,7 @@ public class Principal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 265, Short.MAX_VALUE))
+                .addGap(0, 3553, Short.MAX_VALUE))
         );
 
         jTabbedPane_VentanaErrores.addTab("Errores Léxicos", jPanel1);
@@ -169,48 +171,10 @@ public class Principal extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 261, Short.MAX_VALUE))
+                .addGap(0, 3549, Short.MAX_VALUE))
         );
 
         jTabbedPane_VentanaErrores.addTab("Salida del Programa", jPanel2);
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Nombre", "Localidad", "Valor", "Tipo", "Linea"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(jTable1);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1001, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 273, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jTabbedPane_VentanaErrores.addTab("Tabla de Símbolos", jPanel3);
 
         errsem.setEditable(false);
         errsem.setColumns(20);
@@ -229,10 +193,40 @@ public class Principal extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 262, Short.MAX_VALUE))
+                .addGap(0, 3550, Short.MAX_VALUE))
         );
 
         jTabbedPane_VentanaErrores.addTab("Errores Semanticos", jPanel5);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane9.setViewportView(jTable2);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 999, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 275, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 3564, Short.MAX_VALUE))
+        );
+
+        jTabbedPane_VentanaErrores.addTab("Tabla de Simbolos", jPanel6);
 
         jScrollPane5.setViewportView(jTabbedPane_VentanaErrores);
 
@@ -368,7 +362,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_lexico.setLayout(jPanel_lexicoLayout);
         jPanel_lexicoLayout.setHorizontalGroup(
             jPanel_lexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
         );
         jPanel_lexicoLayout.setVerticalGroup(
             jPanel_lexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,7 +375,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_sintactico.setLayout(jPanel_sintacticoLayout);
         jPanel_sintacticoLayout.setHorizontalGroup(
             jPanel_sintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGap(0, 439, Short.MAX_VALUE)
         );
         jPanel_sintacticoLayout.setVerticalGroup(
             jPanel_sintacticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,7 +393,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_codigo.setLayout(jPanel_codigoLayout);
         jPanel_codigoLayout.setHorizontalGroup(
             jPanel_codigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
         );
         jPanel_codigoLayout.setVerticalGroup(
             jPanel_codigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,7 +406,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_arbol.setLayout(jPanel_arbolLayout);
         jPanel_arbolLayout.setHorizontalGroup(
             jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGap(0, 439, Short.MAX_VALUE)
         );
         jPanel_arbolLayout.setVerticalGroup(
             jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,7 +419,7 @@ public class Principal extends javax.swing.JFrame {
         arbolSemantico.setLayout(arbolSemanticoLayout);
         arbolSemanticoLayout.setHorizontalGroup(
             arbolSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGap(0, 439, Short.MAX_VALUE)
         );
         arbolSemanticoLayout.setVerticalGroup(
             arbolSemanticoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -969,7 +963,7 @@ public class Principal extends javax.swing.JFrame {
                 //lista.addElement(line);
                 //tabla.addRow(new String[]{line});
             }
-            jTable1.setModel(tabla);
+            jTable2.setModel(tabla);
         }catch(Exception e){
         }
         finally{
@@ -985,11 +979,11 @@ public class Principal extends javax.swing.JFrame {
         System.out.println("COMENZANDO______________________________________________________");
             //panArb = tr.crearArbol();
           TreeFromTextFileDemo tr = new TreeFromTextFileDemo();
-          jPanel_arbol = tr.crearArbol();
+          jPanel_arbol = tr.crearArbol("sintactico.txt");
           jTabbedPane_Ventana.setComponentAt(1, jPanel_arbol);
           
-        TreeFromTextFileDemo_1 tr2 = new TreeFromTextFileDemo_1();
-          arbolSemantico = tr2.crearArbol();
+        TreeFromTextFileDemo tr2 = new TreeFromTextFileDemo();
+          arbolSemantico = tr2.crearArbol("semantico.txt");
           jTabbedPane_Ventana.setComponentAt(4, arbolSemantico);
         
         //jTabbedPane_Ventana.setComponentAt(4, );
@@ -1107,25 +1101,25 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu_Ejecutar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel_Botones;
     private javax.swing.JPanel jPanel_arbol;
     private javax.swing.JPanel jPanel_codigo;
     private javax.swing.JPanel jPanel_lexico;
     private javax.swing.JPanel jPanel_sintactico;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane_Ventana;
     private javax.swing.JTabbedPane jTabbedPane_VentanaErrores;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea_lexico;

@@ -1,46 +1,47 @@
 Error la variable: x ya había sido declarada, error en Linea: 2
 Error la variable: z ya había sido declarada, error en Linea: 3
 Error la variable: y ya había sido declarada, error en Linea: 3
-Error no fue declarado d Linea: 8
-Error no fue declarado suma Linea: 13
-Error no fue declarado suma Linea: 13
-Error no fue declarado suma Linea: 15
-Error no fue declarado d Linea: 23
-Error no fue declarado d Linea: 40
+Error no fue declarado suma Linea: 17
+Error no fue declarado suma Linea: 17
+Error no fue declarado suma Linea: 19
+Error no fue declarado d Linea: 27
 Error no fue declarado mas Linea: 45
-Error no fue declarado mas Linea: 49
+Error no fue declarado d Linea: 48
+Error no fue declarado mas Linea: 51
+Error no fue declarado mas Linea: 57
 Error de asignación de valor en: integer Linea: 2
 Error de asignación de valor en: float Linea: 3
 Error de asignación de valor en: bool Linea: 4
-Error en: := el tipo no corresponde en las variables. Linea: 5
-Error en: := el tipo no corresponde en las variables. Linea: 8
-Error en: / no se puede realizar por un valor 0. Linea: 11
-Error de asignación de valor en: / Linea: 11
-Error en: := el tipo no corresponde en las variables. Linea: 11
-Error en: := el tipo no corresponde en las variables. Linea: 13
-Error en: := el tipo no corresponde en las variables. Linea: 14
+Error en: / no se puede realizar por un valor 0. Linea: 15
+Error de asignación de valor en: / Linea: 15
 Error en: := el tipo no corresponde en las variables. Linea: 15
-Error en: := el tipo no corresponde en las variables. Linea: 22
-Error en: := el tipo no corresponde en las variables. Linea: 23
+Error en: := el tipo no corresponde en las variables. Linea: 17
+Error en: := el tipo no corresponde en las variables. Linea: 18
+Error en: := el tipo no corresponde en las variables. Linea: 19
 Error en: := el tipo no corresponde en las variables. Linea: 26
-Error de asignación de valor en: { Linea: 25
+Error en: := el tipo no corresponde en las variables. Linea: 27
+Error en: := el tipo no corresponde en las variables. Linea: 30
 Error de asignación de valor en: { Linea: 29
+Error de asignación de valor en: { Linea: 33
+Error de asignación de valor en: { Linea: 36
+Error de asignación de valor en: if Linea: 33
 Error de asignación de valor en: { Linea: 32
 Error de asignación de valor en: if Linea: 29
-Error de asignación de valor en: { Linea: 28
-Error de asignación de valor en: if Linea: 25
-Error de asignación de valor en: { Linea: 40
-Error de asignación de valor en: while Linea: 40
 Error de asignación de valor en: mi texto Linea: 44
 Error de asignación de valor en: write Linea: 44
 Error en: := el tipo no corresponde en las variables. Linea: 45
-Error de asignación de valor en: read Linea: 49
-Error de asignación de valor en: mi texto Linea: 51
-Error de asignación de valor en: write Linea: 51
+Error de asignación de valor en: Mi texto 1 Linea: 50
+Error de asignación de valor en: write Linea: 50
+Error en: := el tipo no corresponde en las variables. Linea: 51
 Error de asignación de valor en: { Linea: 48
 Error de asignación de valor en: while Linea: 48
 Error de asignación de valor en: { Linea: 46
 Error de asignación de valor en: do Linea: 46
-Error de asignación de valor en: mi texto2 Linea: 56
-Error de asignación de valor en: write Linea: 56
+Error de asignación de valor en: read Linea: 57
+Error de asignación de valor en: Mi texto 2 Linea: 58
+Error de asignación de valor en: write Linea: 58
+Error de asignación de valor en: Mi texto 3 Linea: 59
+Error de asignación de valor en: write Linea: 59
+Error de asignación de valor en: { Linea: 56
+Error de asignación de valor en: while Linea: 56
 Error de asignación de valor en: programa Linea: 1

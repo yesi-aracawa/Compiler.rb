@@ -119,6 +119,12 @@ class Semantica
       elsif token['val'] == 'false'
         return false
       end
+    when 'identificador', 'bool'
+      if token['val'] == 'true'
+        return true
+      elsif token['val'] == 'false'
+        return false
+      end
     when 'entero', 'integer'
       return 0
     when 'real', 'float'
@@ -143,7 +149,11 @@ class Semantica
         este['val'] = $mapa.fetch(este['token']['val'])['val'] # asigna valor actual
       end
     elsif ['true', 'false'].include?(este['token']['val'])
-      este['val'] = este['token']['val'] == 'true'
+      if este['token']['val'] == 'true'
+      este['val'] = true
+      else
+          este['val'] = false
+        end
     elsif este['token']['tipo'] == 'real'
       este['val'] = este['token']['val'].to_f
     elsif este['token']['tipo'] == 'entero'
@@ -169,7 +179,11 @@ class Semantica
               este['dato'] = "integer"
               este['hijos'][0]['val'] = este['hijos'][1]['val'].to_i# asigna nuevo valor
             end
-        else
+          elsif tipo_compatible(este['hijos'][0], este['hijos'][1], [["bool", "bool"], ["bool","integer"]])  
+              este['dato'] = "bool"
+              este['hijos'][0]['val'] = este['hijos'][1]['val']   
+             
+            else
           #TODO: error
           $error_sem = $error_sem + "Error en: " + este['token']['val'] + " el tipo no corresponde en las variables. Linea: " + este['token']['lin'].to_s + "\n"
         end
@@ -196,7 +210,7 @@ class Semantica
           end
         end
       when '<', '<=', '==', '!=', '>=', '>'
-        # if tipo_compatible(este['hijos'][0],este['hijos'][1], [["bool", "bool"]])
+         #if tipo_compatible(este['hijos'][0],este['hijos'][1], [["bool", "bool"]])
           este['dato'] = 'bool'
           if este['token']['val'] == '=='
             if este['hijos'][0]['val'] == este['hijos'][1]['val']
@@ -204,10 +218,40 @@ class Semantica
             else
               este['val'] = false
             end
+          elsif este['token']['val'] == '!='
+            if este['hijos'][0]['val'] != este['hijos'][1]['val']
+              este['val'] = true
+            else
+              este['val'] = false
+            end
+          elsif este['token']['val'] == '<'
+            if este['hijos'][0]['val'] < este['hijos'][1]['val']
+              este['val'] = true
+            else
+              este['val'] = false
+            end
+          elsif este['token']['val'] == '<='
+            if este['hijos'][0]['val'] <= este['hijos'][1]['val']
+              este['val'] = true
+            else
+              este['val'] = false
+            end
+          elsif este['token']['val'] == '>'
+            if este['hijos'][0]['val'] > este['hijos'][1]['val']
+              este['val'] = true
+            else
+              este['val'] = false
+            end
+          elsif este['token']['val'] == '>='
+            if este['hijos'][0]['val'] >= este['hijos'][1]['val']
+              este['val'] = true
+            else
+              este['val'] = false
+            end
           else
             este['val'] = eval(este['hijos'][0]['val'].to_s + este['token']['val'] + este['hijos'][1]['val'].to_s)
           end
-        #end
+       #end
       else # tipos no compatibles
         return false
       end

@@ -15,9 +15,29 @@ programa
   l
  :=
   m
+  ==
+   2
+   9
+ :=
+  m
   !=
    2
    9
+ :=
+  l
+  !=
+   2
+   9
+ :=
+  m
+  >
+   6
+   8
+ :=
+  l
+  <
+   5
+   5
  :=
   c
   45
@@ -25,7 +45,7 @@ programa
   a
   9
  :=
-  d
+  m
   <
    1
    2
@@ -125,7 +145,7 @@ programa
    34
    5
  if
-  /
+  >=
    4
    2
   {
@@ -167,20 +187,6 @@ programa
   +
    3
    4
- while
-  d
-  {
-   :=
-    x
-    +
-     6
-     /
-      *
-       /
-        7
-        9
-       8
-      3
  write
   mi texto
   x
@@ -201,33 +207,44 @@ programa
       2
      1
    while
-    ==
-     y
-     0
+    d
     {
-     read
-      mas
      :=
       x
       +
-       3
-       *
-        /
+       6
+       /
+        *
+         /
+          8
+          9
          8
-         3
-        -
-         5
-         3
+        3
      write
-      mi texto
-      %
-       35.0
-       2
+      Mi texto 1
+      x
+     :=
+      mas
+      /
+       36
+       7
   ==
    y
    5
- write
-  mi texto2
-  %
-   x
-   3
+ while
+  ==
+   y
+   0
+  {
+   read
+    mas
+   write
+    Mi texto 2
+    35.5
+   write
+    Mi texto 3
+    +
+     %
+      8
+      2
+     5
