@@ -68,10 +68,11 @@ class Semantica
       if $mapa.has_key?(tk_val) #ya fue declarada?
         if tipos.include?(este['padre']['token']['val']) #se esta volviendo a declarar
           # TODO: error
-          $error_sem = $error_sem + "Error la variable: " + este['token']['val'] + " ya había sido declarada, error en Linea: " + este['token']['lin'].to_s + "\n"        else#if este['padre']['token']['val'] == ':=' #si fuiste declarada y estas siendo asignada?
+          $error_sem = $error_sem + "Error la variable: " + este['token']['val'] + " ya había sido declarada, error en Linea: " + este['token']['lin'].to_s + "\n" 
+        else#if este['padre']['token']['val'] == ':=' #si fuiste declarada y estas siendo asignada?
           este['dato'] = $mapa.fetch(tk_val, '*')['tipo_d'] #agregamos su tipo de dato
           $mapa[tk_val]['lineas'].push(este['token']['lin']) #agregamos la linea donde aparece
-        #else #sino estas siendo asignada estás siendo usada?
+          #else #sino estas siendo asignada estás siendo usada?
           #este['dato'] = $mapa.fetch(tk_val, '')['tipo_d'] #agregamos su tipo de dato
           # $mapa[tk_val]['lineas'].push(este['token']['lin']) #agregamos la linea donde aparece
         end

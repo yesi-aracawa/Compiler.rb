@@ -105,3 +105,65 @@ class Semantica
     end
   
   end
+#__________________________________________________________________________________________________________________
+#CODIGO P
+#En base al arbol sintactico 
+lda carga direccion identificador
+rdl lee entero, almacena a la direccion en el tope de la printTable
+lod carga valor identificador
+ldc carga valor constante
+grt extrae 2 valores de la pila los compara e inserta resultado
+fjp extrae resultado de tope de ña pila y salta a la etiqueta si es falso
+sto estrae 2 valores d ela pila almacena el 1ro en la direccion del 2do
+lab define la etiqueta
+mpi multiplicacion entera
+mpr #---
+sbi resta entera
+equi extrae 2 valores de pila y compara igualdad
+wri escripe en la pantalla el tope de la pila y loe xtrae
+stp termina evaluacion
+
+#hace un recorrido preorden
+def preorden(padre, func, params) #tipo
+  #analisis de tipo
+  send(func,padre,params)
+  #recorrido
+  padre.hijos.each do |hijo|
+    preorden(hijo, func, padre['token']['tipo'],padre['token']['valor'])
+  end
+end
+
+#funcion de generador de codigo
+#recorrido preorden
+def gen_code(#recibo el arbol)
+  if(#el nodo != NULL)
+    gen_code(#nodo izquierdo)
+    gen_code(#nodo derecho)
+    ....
+  end
+end
+
+#funcion que evalua cada nodo
+def  casos_etiquetas(#nodo)
+  #operador
+  case #tipo
+    when "suma"
+      codigo = codigo + "\n" + "adi"
+    when "resta"
+    when "multiplicacion"
+    when "division"
+    when "modulo"
+    when "identificador"
+      si esta siendo asignado lda
+      codigo = tkn.val + "lda"
+      si lo están asignando a otra variable lod
+    when "entero" || "real"
+    ldc
+  end
+end
+
+va a revisar todo el arbol en preorden
+arreglo de etiquetas [lda,ldc,wri,ri,lab]
+
+#enumeraciones en ruby o hashes?
+# https://stackoverflow.com/questions/75759/enums-in-ruby

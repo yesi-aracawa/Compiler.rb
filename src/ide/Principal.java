@@ -80,7 +80,7 @@ public class Principal extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        salida = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         errsem = new javax.swing.JTextArea();
@@ -102,8 +102,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel_sintactico = new javax.swing.JPanel();
         jPanel_codigo = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        Arbol_Sin = new javax.swing.JTextArea();
-        jPanel_arbol = new javax.swing.JPanel();
+        CI = new javax.swing.JTextArea();
         arbolSemantico = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -154,10 +153,10 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane_VentanaErrores.addTab("Errores Léxicos", jPanel1);
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane8.setViewportView(jTextArea2);
+        salida.setEditable(false);
+        salida.setColumns(20);
+        salida.setRows(5);
+        jScrollPane8.setViewportView(salida);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -384,10 +383,10 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane_Ventana.addTab("Sintáctico", jPanel_sintactico);
 
-        Arbol_Sin.setEditable(false);
-        Arbol_Sin.setColumns(20);
-        Arbol_Sin.setRows(5);
-        jScrollPane6.setViewportView(Arbol_Sin);
+        CI.setEditable(false);
+        CI.setColumns(20);
+        CI.setRows(5);
+        jScrollPane6.setViewportView(CI);
 
         javax.swing.GroupLayout jPanel_codigoLayout = new javax.swing.GroupLayout(jPanel_codigo);
         jPanel_codigo.setLayout(jPanel_codigoLayout);
@@ -401,19 +400,6 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTabbedPane_Ventana.addTab("Código Intermedio", jPanel_codigo);
-
-        javax.swing.GroupLayout jPanel_arbolLayout = new javax.swing.GroupLayout(jPanel_arbol);
-        jPanel_arbol.setLayout(jPanel_arbolLayout);
-        jPanel_arbolLayout.setHorizontalGroup(
-            jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 439, Short.MAX_VALUE)
-        );
-        jPanel_arbolLayout.setVerticalGroup(
-            jPanel_arbolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 439, Short.MAX_VALUE)
-        );
-
-        jTabbedPane_Ventana.addTab("Arbol", jPanel_arbol);
 
         javax.swing.GroupLayout arbolSemanticoLayout = new javax.swing.GroupLayout(arbolSemantico);
         arbolSemantico.setLayout(arbolSemanticoLayout);
@@ -858,7 +844,7 @@ public class Principal extends javax.swing.JFrame {
         gestion.guardar(archivo, PaneldeCodigo);
         this.jTextArea_lexico.setText(" ");
         this.jTextArea1.setText(" ");
-        this.jTextArea2.setText(" ");
+        this.salida.setText(" ");
         System.out.println("Compilando");
         File f;
         //guarda siempre por dafault el programa en un archivo, para este archivo mandarlo a ruby
@@ -915,7 +901,7 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-         
+        /* 
         Arbol_Sin.setText("");
         //muestra arbol sintactico sin desplegar
         File arch2 = new File("sintactico.txt");
@@ -932,7 +918,7 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        */
         //TABLA HASH
         File semanArch = null;
         FileReader fileR=null;
@@ -979,12 +965,12 @@ public class Principal extends javax.swing.JFrame {
         System.out.println("COMENZANDO______________________________________________________");
             //panArb = tr.crearArbol();
           TreeFromTextFileDemo tr = new TreeFromTextFileDemo();
-          jPanel_arbol = tr.crearArbol("sintactico.txt");
-          jTabbedPane_Ventana.setComponentAt(1, jPanel_arbol);
+         jPanel_sintactico = tr.crearArbol("sintactico.txt");
+          jTabbedPane_Ventana.setComponentAt(1, jPanel_sintactico);
           
         TreeFromTextFileDemo tr2 = new TreeFromTextFileDemo();
           arbolSemantico = tr2.crearArbol("semantico.txt");
-          jTabbedPane_Ventana.setComponentAt(4, arbolSemantico);
+          jTabbedPane_Ventana.setComponentAt(3, arbolSemantico);
         
         //jTabbedPane_Ventana.setComponentAt(4, );
         System.out.println("REVELANDO_________________________________________________________");
@@ -997,7 +983,7 @@ public class Principal extends javax.swing.JFrame {
                 
             while (linea1 != null) {
                
-                jTextArea2.append(linea1 + "\n");
+                salida.append(linea1 + "\n");
                 linea1 = leer1.readLine();
             }
         } catch (Exception ex) {
@@ -1023,7 +1009,34 @@ public class Principal extends javax.swing.JFrame {
         }
         //sintactico*******************************************************************************
         //arbol_Desp(2);
-        
+        // Generacion de codigo intermedio y resultados
+        //Muestra Archivo de Tokens  
+        System.out.println("Generando codigo intermedio *******************O****OO****");
+        File arch5 = new File("code_interm.txt");
+        try {
+            BufferedReader leer = new BufferedReader(new FileReader(arch5));
+            String linea = leer.readLine();
+            while (linea != null) {
+                CI.append(linea + "\n");
+                linea = leer.readLine();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Generando Resultados ||||||||||||||||||||||||||||||||||||||||||||||||");
+        File arch6 = new File("result.txt");
+        try {
+            BufferedReader leer = new BufferedReader(new FileReader(arch6));
+            String linea = leer.readLine();
+            while (linea != null) {
+                salida.append(linea + "\n");
+                linea = leer.readLine();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.println("En toeria ya termino");
     }//GEN-LAST:event_RunBottomActionPerformed
 
@@ -1071,7 +1084,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea Arbol_Sin;
+    private javax.swing.JTextArea CI;
     private javax.swing.JButton ConfigButtom;
     private javax.swing.JButton DeleteBottom;
     private javax.swing.JButton NewFileBottom;
@@ -1105,7 +1118,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel_Botones;
-    private javax.swing.JPanel jPanel_arbol;
     private javax.swing.JPanel jPanel_codigo;
     private javax.swing.JPanel jPanel_lexico;
     private javax.swing.JPanel jPanel_sintactico;
@@ -1121,8 +1133,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane_VentanaErrores;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea_lexico;
     private javax.swing.JLabel renCol;
+    private javax.swing.JTextArea salida;
     // End of variables declaration//GEN-END:variables
 }
