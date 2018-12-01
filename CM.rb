@@ -6,7 +6,7 @@
 # #********************************************************/
 
 Class maquina
-    def __init__(self):
+    def init(self)
         self.IADDR_SIZE = 1024 # incremente para programas grandes */
         self.DADDR_SIZE = 1024 # incremente para programas grandes */
         self.PC_REG = 7
@@ -16,14 +16,17 @@ Class maquina
         self.dMem = []
         self.reg = []
 
-        for i in range(8):
+        for i in (0..8)
             self.reg.append(0)
-        for i in range(self.DADDR_SIZE):
+        end
+        (self.DADDR_SIZE).each do |i|
             self.dMem.append(0)
         self.dMem[0] = self.DADDR_SIZE - 1
+        end
+    end
 
     def cargaInstrucciones(self) #lee el codigo intermedio
-        ruta = "intermedio.txt"
+        ruta = "code_interm.txt"
 
         with open(ruta, "r") as archivo:
             contenido = archivo.read()
@@ -55,7 +58,7 @@ Class maquina
          end
      end
 
-    def error (self, msg, lineNo, instNo):
+    def error (self, msg, lineNo, instNo)
         print lineNo
         if instNo >= 0
             print 'Instruccion' + instNo
@@ -72,14 +75,14 @@ Class maquina
         end
      end
 
-    def ejecutarPaso(self):
+    def ejecutarPaso(self)
         pc = self.reg[self.PC_REG]
         self.reg[self.PC_REG] = pc+1
 
         instActual = self.iMem[str(pc)]
         #print instActual
 
-        if instActual.has_key('d'):
+        if instActual.has_key('d')
             r = instActual['r']
             s = instActual['s']
             if type(eval(instActual['d'])) != float:
@@ -162,9 +165,8 @@ Class maquina
             print 'OUT>> ' + str(self.reg[b])
         end
         return 'OKAY'
-      end
     end
-  end
+end
 
 TEM = maquina()
 TEM.cargaInstrucciones()
