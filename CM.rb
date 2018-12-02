@@ -5,169 +5,177 @@
 # # Kenneth C. Louden                                     */
 # #********************************************************/
 
-Class maquina
-    def init(self)
-        self.IADDR_SIZE = 1024 # incremente para programas grandes */
-        self.DADDR_SIZE = 1024 # incremente para programas grandes */
-        self.PC_REG = 7
-        self.STEPRESULT = ''
+class Maquina #acceso a metodos protegidos
+  attr_accessor :IADDR_SIZE
+  attr_accessor :DADDR_SIZE
+  attr_accessor :PC_REG
+  attr_accessor :STEPRESULT
+  attr_accessor :iMem
+  attr_accessor :dMem
+  attr_accessor :reg
 
-        self.iMem = {}
-        self.dMem = []
-        self.reg = []
+  def initialize #definicion de metodos protegidos
+    @IADDR_SIZE = 1024 # incremente para programas grandes
+    @DADDR_SIZE = 1024 # incremente para programas grandes
+    @PC_REG = 7
+    @STEPRESULT = ''
 
-        for i in (0..8)
-            self.reg.append(0)
-        end
-        (self.DADDR_SIZE).each do |i|
-            self.dMem.append(0)
-        self.dMem[0] = self.DADDR_SIZE - 1
-        end
-    end
+    @iMem = []
+    @dMem = []
+    @dMem.fill(0, 0..1024)
+    @reg = []
+    @reg.fill(0, 0..8)
 
-    def cargaInstrucciones(self) #lee el codigo intermedio
-        ruta = "code_interm.txt"
+    @dMem[0] = @DADDR_SIZE - 1
+  end
 
-        with open(ruta, "r") as archivo:
-            contenido = archivo.read()
-            contenido += "final"
-        #print contenido
-        renglones = contenido.split('\n')
-        renglones.each do |aux|
-            params = aux.split('\t')
-            if params[0] != "final":
-                if params[1] == 'LD' || params[1] == 'LDA' || params[1] == 'LDC' || params[1] == 'ST' \
-                    || params[1] == 'JLT' || params[1] == 'JLE' || params[1] == 'JGE' || params[1] == 'JGT' \
-                    || params[1] == 'JEQ' || params[1] == 'JNE':
-                    obj = {
-                        'opcode': params[1],
-                        'r': params[2],
-                        'd': params[3],
-                        's': params[4]
-                    }
-                else
-                    obj = {
-                        'opcode': params[1],
-                        'r': params[2],
-                        's': params[3],
-                        't': params[4]
-                        }
-                end
-            end
-            self.iMem[str(params[0])] = obj
-         end
-     end
-
-    def error (self, msg, lineNo, instNo)
-        print lineNo
-        if instNo >= 0
-            print 'Instruccion' + instNo
-        end
-        print msg
-        return 0
-     end
-
-    def inicio(self):
-        #print self.iMem
-        self.STEPRESULT = 'OKAY'
-        while self.STEPRESULT == 'OKAY' do
-            self.STEPRESULT = self.ejecutarPaso()
-        end
-     end
-
-    def ejecutarPaso(self)
-        pc = self.reg[self.PC_REG]
-        self.reg[self.PC_REG] = pc+1
-
-        instActual = self.iMem[str(pc)]
-        #print instActual
-
-        if instActual.has_key('d')
-            r = instActual['r']
-            s = instActual['s']
-            if type(eval(instActual['d'])) != float:
-                m = int(instActual['d']) + self.reg[int(s)]
-            else
-                m = float(instActual['d']) + self.reg[int(s)]
-            end
+  def cargaInstrucciones(ruta) # lee el codigo intermedio
+    contenido = File.open(ruta,'r').read #abre el archivo en lectura
+    contenido += "OKAY" # agregado para finalizar cuando ha terminado correctamente
+    
+    renglones = contenido.split("\r\n") #lo divide en renglones por salto de linea formando un arreglo de reglones
+    renglones.each do |renglon| #itera sobre el arreglo de renglones
+      print renglon + "\n"
+      params = renglon.split("\t") #dividiendolo en tabulaciones
+      print params.to_s + "\n"
+      if params[0] != "final" #al final va a tener una palabra final, así que mientras sea diferente, avanzará
+        if ['LD','LDA','LDC','ST','JLT','JLE','JGE','JGT','JEQ','JNE'].include?(params[1]) #pregunta si es alguno de estas etiquetas
+          # si es así envía al arreglo iMem 
+          @iMem.push({
+              'opcode': params[1],
+              'r': params[2],
+              'd': params[3],
+              's': params[4],
+              't': nil
+          })
         else
-            r = instActual['r']
-            s = instActual['s']
-            t = instActual['t']
-        if instActual['opcode'] == 'HALT'
-            print instActual['opcode'] + ' ' + str(r) + ' ' + str(s) + ' ' + str(t)
-            return 'HALT'
-        elsif instActual['opcode'] == 'ADD'
-            self.reg[int(r)] = self.reg[int(s)] + self.reg[int(t)]
-        elsif instActual['opcode'] == 'SUB'
-            self.reg[int(r)] = self.reg[int(s)] - self.reg[int(t)]
-        elsif instActual['opcode'] == 'MUL'
-            self.reg[int(r)] = self.reg[int(s)] * self.reg[int(t)]
-            #print 'a'
-        elsif instActual['opcode'] == 'DIV'
-            if self.reg[int(t)] == 0
-                return 'ZERODIVIDE'
-            else
-                self.reg[int(r)] = self.reg[int(s)] / self.reg[int(t)]
-            end
-        elsif instActual['opcode'] == 'LD'
-            self.reg[int(r)] = self.dMem[int(m)]
-        elsif instActual['opcode'] == 'ST'
-            self.dMem[int(m)] = self.reg[int(r)]
-        elsif instActual['opcode'] == 'LDA'
-            self.reg[int(r)] = int(m)
-        elsif instActual['opcode'] == 'LDC'
-            if type(eval(instActual['d'])) == float
-                self.reg[int(r)] = float(instActual['d'])
-            else
-                self.reg[int(r)] = int(instActual['d'])
-            end
-        elsif instActual['opcode'] == 'JLT'
-            if self.reg[int(r)] < 0
-                self.reg[self.PC_REG] = int(m)
-            end
-        elsif instActual['opcode'] == 'JLE'
-            if self.reg[int(r)] <= 0
-                self.reg[self.PC_REG] = int(m)
-            end
-        elsif instActual['opcode'] == 'JGT'
-            if self.reg[int(r)] > 0
-                self.reg[self.PC_REG] = int(m)
-            end
-        elsif instActual['opcode'] == 'JGE'
-            if self.reg[int(r)] >= 0
-                self.reg[int(self.PC_REG)] = int(m)
-            end
-        elsif instActual['opcode'] == 'JEQ'
-            if self.reg[int(r)] == 0
-                self.reg[self.PC_REG] = int(m)
-            end
-        elsif instActual['opcode'] == 'JNE'
-            if self.reg[int(r)] != 0
-                self.reg[self.PC_REG] = int(m)
-            end
-        elsif instActual['opcode'] == 'IN'
-            print 'CIN>>'
-            begin
-                dato = input()
-                #tipo = self.hash.get()
-                if type(dato) == float
-                    self.reg[int(instActual['r'])] = float(dato)
-                else
-                    self.reg[int(instActual['r'])] = int(dato)
-                end
-            rescue StandardError => e
-                #print e
-                return 'INVALID VALUE'
-            end
-        elsif instActual['opcode'] == 'OUT'
-            b = int(int(instActual['r']))
-            print 'OUT>> ' + str(self.reg[b])
+            @iMem.push({
+                'opcode': params[1],
+                'r': params[2],
+                'd': nil,
+                's': params[3],
+                't': params[4]
+            })
         end
-        return 'OKAY'
+      end
     end
+  end
+
+  def error (msg, lineNo, instNo) # tarata el error
+    print lineNo
+    if instNo >= 0
+      print 'Instruccion' + instNo
+    end
+    print msg
+    return 0
+  end
+
+  def inicio # si el procedimiento es correcto
+    #print @iMem
+    @STEPRESULT = 'OKAY'
+    while @STEPRESULT == 'OKAY' do
+      @STEPRESULT = ejecutarPaso() # ejecuta la funcion
+    end
+  end
+
+  def ejecutarPaso
+    pc = @reg[@PC_REG]
+    @reg[@PC_REG] = pc+1
+
+    instActual = @iMem[pc]
+    #print instActual
+
+    if instActual.has_key?(:d) #si contiene d
+      r = instActual[:r]
+      s = instActual[:s]
+      if instActual[:d].class != Float
+        m = (instActual[:d]).to_i + @reg[s.to_i]
+      else
+        m = Float(instActual[:d]) + @reg[s.to_i]
+      end
+    else
+      r = instActual[:r]
+      s = instActual[:s]
+      t = instActual[:t]
+    end
+
+    if instActual[:opcode] == 'HALT'
+      print instActual[:opcode] + ' ' + r.to_s + ' ' + s.to_s + ' ' + t.to_s
+      return 'HALT'
+    elsif instActual[:opcode] == 'ADD'
+      @reg[r.to_i] = @reg[s.to_i] + @reg[t.to_i]
+    elsif instActual[:opcode] == 'SUB'
+      @reg[r.to_i] = @reg[s.to_i] - @reg[t.to_i]
+    elsif instActual[:opcode] == 'MUL'
+      @reg[r.to_i] = @reg[s.to_i] * @reg[t.to_i]
+      #print 'a'
+    elsif instActual[:opcode] == 'DIV'
+      if @reg[t.to_i] == 0
+        return 'ZERODIVIDE'
+      else
+        @reg[r.to_i] = @reg[s.to_i] / @reg[t.to_i]
+      end
+    elsif instActual[:opcode] == 'LD'
+      @reg[r.to_i] = @dMem[m.to_i]
+    elsif instActual[:opcode] == 'ST'
+      @dMem[m.to_i] = @reg[r.to_i]
+    elsif instActual[:opcode] == 'LDA'
+      @reg[r.to_i] = m.to_i
+    elsif instActual[:opcode] == 'LDC'
+      if (eval(instActual[:d])).class == Float
+        @reg[r.to_i] = Float(instActual[:d])
+      else
+        @reg[r.to_i] = (instActual[:d]).to_i
+      end
+    elsif instActual[:opcode] == 'JLT'
+      if @reg[r.to_i] < 0
+        @reg[@PC_REG] = m.to_i
+      end
+    elsif instActual[:opcode] == 'JLE'
+      if @reg[r.to_i] <= 0
+        @reg[@PC_REG] = m.to_i
+      end
+    elsif instActual[:opcode] == 'JGT'
+      if @reg[r.to_i] > 0
+        @reg[@PC_REG] = m.to_i
+      end
+    elsif instActual[:opcode] == 'JGE'
+      if @reg[r.to_i] >= 0
+        @reg[(@PC_REG).to_i] = m.to_i
+      end
+    elsif instActual[:opcode] == 'JEQ'
+      if @reg[r.to_i] == 0
+        @reg[@PC_REG] = m.to_i
+      end
+    elsif instActual[:opcode] == 'JNE'
+      if @reg[r.to_i] != 0
+        @reg[@PC_REG] = m.to_i
+      end
+    elsif instActual[:opcode] == 'IN'
+      print 'CIN>>'
+      begin #excepcion
+        dato = gets #a la espera de la escritura
+        #tipo = @hash.get()
+        if dato.class == Float # si es de tipo float
+          @reg[(instActual[:r]).to_i] = dato.to_f 
+        else
+          @reg[(instActual[:r]).to_i] = dato.to_i
+        end
+      rescue StandardError => e
+        #print e
+        return 'INVALID VALUE'
+      end
+    elsif instActual[:opcode] == 'OUT'
+      b = (instActual[:r]).to_i
+      print 'OUT>> ' + (@reg[b]).to_s #envía la salida
+    end
+
+    return 'OKAY'
+  end
 end
 
-TEM = maquina()
-TEM.cargaInstrucciones()
-TEM.inicio()
+TEM = Maquina.new
+TEM.cargaInstrucciones('./intermedio.txt')
+TEM.inicio
+  
+  
