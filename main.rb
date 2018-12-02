@@ -1,15 +1,19 @@
 require './lexico.rb'
 require './sintacticoS.rb'
 require './semantica.rb'
-require './cm.rb'
+require './CM.rb'
 require './CGEN.rb'
+
 l = Lexico.new
 s = Sintactico.new
 sem = Semantica.new
 codeint = Codegen.new
+maquina = Maquina.new
 
-$tokens = l.lexico('lexico.txt')
-$arbol, error = s.init($tokens)
-sem.init($arbol)
-codeint.codeGen($arbol)
-#$arbol2, errorSem = sem.init($arbol)
+tokens = l.lexico('lexico.txt')
+arbol, error = s.init(tokens)
+sem.init(arbol)
+codeint.code_gen(arbol)
+maquina.cargaInstrucciones('code_interm.txt')
+maquina.inicio
+# $arbol2, errorSem = sem.init($arbol)

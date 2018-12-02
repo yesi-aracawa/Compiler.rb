@@ -1,9 +1,9 @@
-# #********************************************************/
-# # Archivo: tm.c                                         */
-# # La computadora TM ("Compiler Machine")                */
-# # Construccidn de compiladores: principios y practica   */
-# # Kenneth C. Louden                                     */
-# #********************************************************/
+# *********************************************************
+# * Archivo: tm.c                                         *
+# * La computadora TM ("Compiler Machine")                *
+# * Construccidn de compiladores: principios y practica   *
+# * Kenneth C. Louden                                     *
+# *********************************************************
 
 class Maquina #acceso a metodos protegidos
   attr_accessor :IADDR_SIZE
@@ -14,7 +14,8 @@ class Maquina #acceso a metodos protegidos
   attr_accessor :dMem
   attr_accessor :reg
 
-  def initialize #definicion de metodos protegidos
+  # definicion de metodos protegidos
+  def initialize
     @IADDR_SIZE = 1024 # incremente para programas grandes
     @DADDR_SIZE = 1024 # incremente para programas grandes
     @PC_REG = 7
@@ -30,14 +31,14 @@ class Maquina #acceso a metodos protegidos
   end
 
   def cargaInstrucciones(ruta) # lee el codigo intermedio
-    contenido = File.open(ruta,'r').read #abre el archivo en lectura
+    contenido = File.open(ruta, 'r').read #abre el archivo en lectura
     contenido += "OKAY" # agregado para finalizar cuando ha terminado correctamente
-    
-    renglones = contenido.split("\r\n") #lo divide en renglones por salto de linea formando un arreglo de reglones
+
+    renglones = contenido.split("\n") #lo divide en renglones por salto de linea formando un arreglo de reglones
     renglones.each do |renglon| #itera sobre el arreglo de renglones
-      print renglon + "\n"
+      # puts renglon
       params = renglon.split("\t") #dividiendolo en tabulaciones
-      print params.to_s + "\n"
+      # puts params.to_s
       if params[0] != "final" #al final va a tener una palabra final, así que mientras sea diferente, avanzará
         if ['LD','LDA','LDC','ST','JLT','JLE','JGE','JGT','JEQ','JNE'].include?(params[1]) #pregunta si es alguno de estas etiquetas
           # si es así envía al arreglo iMem 
@@ -80,12 +81,11 @@ class Maquina #acceso a metodos protegidos
 
   def ejecutarPaso
     pc = @reg[@PC_REG]
-    @reg[@PC_REG] = pc+1
+    @reg[@PC_REG] = pc + 1
 
     instActual = @iMem[pc]
-    #print instActual
 
-    if instActual.has_key?(:d) #si contiene d
+    if instActual.has_key?(:d) # si contiene d
       r = instActual[:r]
       s = instActual[:s]
       if instActual[:d].class != Float
@@ -157,7 +157,7 @@ class Maquina #acceso a metodos protegidos
         dato = gets #a la espera de la escritura
         #tipo = @hash.get()
         if dato.class == Float # si es de tipo float
-          @reg[(instActual[:r]).to_i] = dato.to_f 
+          @reg[(instActual[:r]).to_i] = dato.to_f
         else
           @reg[(instActual[:r]).to_i] = dato.to_i
         end
@@ -167,15 +167,10 @@ class Maquina #acceso a metodos protegidos
       end
     elsif instActual[:opcode] == 'OUT'
       b = (instActual[:r]).to_i
-      print 'OUT>> ' + (@reg[b]).to_s #envía la salida
+      # @reg[@PC_REG] = m.to_i
+      puts 'OUT>> ' + (@reg[b]).to_s # envia la salida
     end
 
     return 'OKAY'
   end
 end
-
-TEM = Maquina.new
-TEM.cargaInstrucciones('./intermedio.txt')
-TEM.inicio
-  
-  
