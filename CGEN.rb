@@ -50,7 +50,7 @@ class Codegen
     end
   end
 
-  def cGen(tree) # Genarador de codigo recursivo interno 
+  def cGen(tree, nHijo) # Genarador de codigo recursivo interno 
     if  tree != nil # recorre el arbol en postorden
       if tree.nodekind == "sentencia" #y evalua si es un nodo de sentencia o de expresion
         genStmt(tree)
