@@ -67,7 +67,7 @@ public class Proceso extends Thread {
             
             resp = r.readLine();
             while (resp != null) {
-                if ("CIN>>".equals(resp)) {
+                if ("read".equals(resp)) {
                     txt.append(resp + "\n");
                     resp = r.readLine();
                 } else {

@@ -6,13 +6,14 @@
 # *********************************************************
 $stdout.sync = true
 
-class Maquina #acceso a metodos protegidos
+class Maquina
+  # acceso a metodos protegidos
   attr_accessor :IADDR_SIZE
   attr_accessor :DADDR_SIZE
   attr_accessor :PC_REG
   attr_accessor :STEPRESULT
-  attr_accessor :iMem
-  attr_accessor :dMem
+  attr_accessor :i_mem
+  attr_accessor :d_mem
   attr_accessor :reg
 
   # definicion de metodos protegidos
@@ -22,152 +23,161 @@ class Maquina #acceso a metodos protegidos
     @PC_REG = 7
     @STEPRESULT = ''
 
-    @iMem = []
-    @dMem = []
-    @dMem.fill(0, 0..1024)
+    @i_mem = []
+    @d_mem = []
+    @d_mem.fill(0, 0..1024)
     @reg = []
     @reg.fill(0, 0..8)
 
-    @dMem[0] = @DADDR_SIZE - 1
+    @d_mem[0] = @DADDR_SIZE - 1
   end
 
-  def cargaInstrucciones(ruta) # lee el codigo intermedio
-    contenido = File.open(ruta, 'r').read #abre el archivo en lectura
-    contenido += "OKAY" # agregado para finalizar cuando ha terminado correctamente
+  # lee el codigo intermedio
+  def cargaInstrucciones(ruta)
+    contenido = File.open(ruta, 'r').read # abre el archivo en lectura
+    # agregado para finalizar cuando ha terminado correctamente
+    contenido += 'OKAY'
 
-    renglones = contenido.split("\n") #lo divide en renglones por salto de linea formando un arreglo de reglones
-    renglones.each do |renglon| #itera sobre el arreglo de renglones
+    # lo divide en renglones por salto de linea formando un arreglo de reglones
+    renglones = contenido.split("\n")
+    renglones.each do |renglon| # itera sobre el arreglo de renglones
       # puts renglon
-      params = renglon.split("\t") #dividiendolo en tabulaciones
+      params = renglon.split("\t") # dividiendolo en tabulaciones
       # puts params.to_s
-      if params[0] != "final" #al final va a tener una palabra final, así que mientras sea diferente, avanzará
-        if ['LD','LDA','LDC','ST','JLT','JLE','JGE','JGT','JEQ','JNE'].include?(params[1]) #pregunta si es alguno de estas etiquetas
-          # si es así envía al arreglo iMem 
-          @iMem.push({
-              'opcode': params[1],
-              'r': params[2],
-              'd': params[3],
-              's': params[4],
-              't': nil
+
+      # al final va a tener una palabra final,
+      # asi que mientras sea diferente, avanzara
+      if params[0] != 'final'
+        # pregunta si es alguno de estas etiquetas
+        if %w[LD LDA LDC ST JLT JLE JGE JGT JEQ JNE].include?(params[1])
+          # si es asi envia al arreglo i_mem
+          @i_mem.push(
+          {
+            'opcode': params[1],
+            'r': params[2],
+            'd': params[3],
+            's': params[4],
+            't': nil
           })
         else
-            @iMem.push({
-                'opcode': params[1],
-                'r': params[2],
-                'd': nil,
-                's': params[3],
-                't': params[4]
-            })
+          @i_mem.push(
+          {
+            'opcode': params[1],
+            'r': params[2],
+            'd': nil,
+            's': params[3],
+            't': params[4]
+          })
         end
       end
     end
   end
 
-  def error (msg, lineNo, instNo) # tarata el error
-    print lineNo
-    if instNo >= 0
-      print 'Instruccion' + instNo
-    end
+  # trata el error
+  def error(msg, line_no, inst_no)
+    print line_no
+    (print 'Instruccion' + instNo) if inst_no >= 0
     print msg
     return 0
   end
 
-  def inicio # si el procedimiento es correcto
-    #print @iMem
+  # si el procedimiento es correcto
+  def inicio
+    # print @i_mem
     @STEPRESULT = 'OKAY'
-    while @STEPRESULT == 'OKAY' do
-      @STEPRESULT = ejecutarPaso() # ejecuta la funcion
-    end
+    # ejecuta la funcion
+    @STEPRESULT = ejecutarPaso() while @STEPRESULT == 'OKAY'
   end
 
   def ejecutarPaso
+    print '.'
     pc = @reg[@PC_REG]
     @reg[@PC_REG] = pc + 1
 
-    instActual = @iMem[pc]
+    current_line = @i_mem[pc]
 
-    if instActual.has_key?(:d) # si contiene d
-      r = instActual[:r]
-      s = instActual[:s]
-      if instActual[:d].class != Float
-        m = (instActual[:d]).to_i + @reg[s.to_i]
-      else
-        m = Float(instActual[:d]) + @reg[s.to_i]
-      end
+    r = current_line[:r]
+    s = current_line[:s]
+    if current_line.has_key?(:d) # si contiene d
+      m = if current_line[:d].class != Float
+            current_line[:d].to_i + @reg[s.to_i]
+          else
+            Float(current_line[:d]) + @reg[s.to_i]
+          end
     else
-      r = instActual[:r]
-      s = instActual[:s]
-      t = instActual[:t]
+      t = current_line[:t]
     end
 
-    if instActual[:opcode] == 'HALT'
-      print instActual[:opcode] + ' ' + r.to_s + ' ' + s.to_s + ' ' + t.to_s
+    if current_line[:opcode] == 'HALT'
+      print current_line[:opcode] + ' ' + r.to_s + ' ' + s.to_s + ' ' + t.to_s
       return 'HALT'
-    elsif instActual[:opcode] == 'ADD'
+    elsif current_line[:opcode] == 'ADD'
       @reg[r.to_i] = @reg[s.to_i] + @reg[t.to_i]
-    elsif instActual[:opcode] == 'SUB'
+    elsif current_line[:opcode] == 'SUB'
       @reg[r.to_i] = @reg[s.to_i] - @reg[t.to_i]
-    elsif instActual[:opcode] == 'MUL'
+    elsif current_line[:opcode] == 'MUL'
       @reg[r.to_i] = @reg[s.to_i] * @reg[t.to_i]
-      #print 'a'
-    elsif instActual[:opcode] == 'DIV'
-      if @reg[t.to_i] == 0
+      # print 'a'
+    elsif current_line[:opcode] == 'DIV'
+      if @reg[t.to_i].zero?
         return 'ZERODIVIDE'
       else
         @reg[r.to_i] = @reg[s.to_i] / @reg[t.to_i]
       end
-    elsif instActual[:opcode] == 'LD'
-      @reg[r.to_i] = @dMem[m.to_i]
-    elsif instActual[:opcode] == 'ST'
-      @dMem[m.to_i] = @reg[r.to_i]
-    elsif instActual[:opcode] == 'LDA'
+    elsif current_line[:opcode] == 'LD'
+      @reg[r.to_i] = @d_mem[m.to_i]
+    elsif current_line[:opcode] == 'ST'
+      @d_mem[m.to_i] = @reg[r.to_i]
+    elsif current_line[:opcode] == 'LDA'
       @reg[r.to_i] = m.to_i
-    elsif instActual[:opcode] == 'LDC'
-      if (eval(instActual[:d])).class == Float
-        @reg[r.to_i] = Float(instActual[:d])
+    elsif current_line[:opcode] == 'LDC'
+      if eval(current_line[:d]).class == Float
+        @reg[r.to_i] = current_line[:d].to_f
       else
-        @reg[r.to_i] = (instActual[:d]).to_i
+        @reg[r.to_i] = current_line[:d].to_i
       end
-    elsif instActual[:opcode] == 'JLT'
+    elsif current_line[:opcode] == 'JLT'
       if @reg[r.to_i] < 0
         @reg[@PC_REG] = m.to_i
       end
-    elsif instActual[:opcode] == 'JLE'
+    elsif current_line[:opcode] == 'JLE'
       if @reg[r.to_i] <= 0
         @reg[@PC_REG] = m.to_i
       end
-    elsif instActual[:opcode] == 'JGT'
+    elsif current_line[:opcode] == 'JGT'
       if @reg[r.to_i] > 0
         @reg[@PC_REG] = m.to_i
       end
-    elsif instActual[:opcode] == 'JGE'
+    elsif current_line[:opcode] == 'JGE'
       if @reg[r.to_i] >= 0
-        @reg[(@PC_REG).to_i] = m.to_i
+        @reg[@PC_REG.to_i] = m.to_i
       end
-    elsif instActual[:opcode] == 'JEQ'
-      if @reg[r.to_i] == 0
+    elsif current_line[:opcode] == 'JEQ'
+      if @reg[r.to_i].zero?
         @reg[@PC_REG] = m.to_i
       end
-    elsif instActual[:opcode] == 'JNE'
+    elsif current_line[:opcode] == 'JNE'
       if @reg[r.to_i] != 0
         @reg[@PC_REG] = m.to_i
       end
-    elsif instActual[:opcode] == 'IN'
+    elsif current_line[:opcode] == 'IN'
       print 'CIN>>'
-      begin #excepcion
-        dato = gets #a la espera de la escritura
-        #tipo = @hash.get()
-        if dato.class == Float # si es de tipo float
-          @reg[(instActual[:r]).to_i] = dato.to_f
+      # excepcion
+      begin
+        dato = gets # a la espera de la escritura
+        # tipo = @hash.get()
+        # si es de tipo float
+        if dato.class == Float
+          @reg[(current_line[:r]).to_i] = dato.to_f
         else
-          @reg[(instActual[:r]).to_i] = dato.to_i
+          @reg[(current_line[:r]).to_i] = dato.to_i
         end
       rescue StandardError => e
-        #print e
+        # print e
         return 'INVALID VALUE'
       end
-    elsif instActual[:opcode] == 'OUT'
-      b = (instActual[:r]).to_i
+    elsif current_line[:opcode] == 'OUT'
+      b = current_line[:r].to_i
       # @reg[@PC_REG] = m.to_i
       puts 'OUT>> ' + (@reg[b]).to_s # envia la salida
     end

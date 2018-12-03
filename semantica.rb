@@ -72,7 +72,7 @@ class Semantica
         else#if este['padre']['token']['val'] == ':=' #si fuiste declarada y estas siendo asignada?
           este['dato'] = $mapa.fetch(tk_val, '*')['tipo_d'] #agregamos su tipo de dato
           $mapa[tk_val]['lineas'].push(este['token']['lin']) #agregamos la linea donde aparece
-          #else #sino estas siendo asignada estás siendo usada?
+        #else #sino estas siendo asignada estás siendo usada?
           #este['dato'] = $mapa.fetch(tk_val, '')['tipo_d'] #agregamos su tipo de dato
           # $mapa[tk_val]['lineas'].push(este['token']['lin']) #agregamos la linea donde aparece
         end

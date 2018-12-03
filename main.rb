@@ -19,3 +19,4 @@ codeint.code_gen(arbol)
 # maquina.cargaInstrucciones('code_interm.txt')
 # maquina.inicio
 # $arbol2, errorSem = sem.init($arbol)
+

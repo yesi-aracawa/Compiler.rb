@@ -865,6 +865,7 @@ public class Principal extends javax.swing.JFrame {
             
             String env = System.getenv("DOCKER_HOME");
             System.out.println(env);
+            System.out.println("ejecutando");
             Process r = Runtime.getRuntime().exec("cmd /C docker-compose -f "+ env +"\\docker-compose.yml up ");
             BufferedReader in = new BufferedReader(new InputStreamReader(r.getInputStream()));
             String line = null;
@@ -1012,6 +1013,7 @@ public class Principal extends javax.swing.JFrame {
         // Generacion de codigo intermedio y resultados
         //Muestra Archivo de Tokens  
         System.out.println("Generando codigo intermedio *******************O****OO****");
+        CI.setText("");
         File arch5 = new File("code_interm.txt");
         try {
             BufferedReader leer = new BufferedReader(new FileReader(arch5));
@@ -1026,7 +1028,7 @@ public class Principal extends javax.swing.JFrame {
         }
         System.out.println("Generando Resultados ||||||||||||||||||||||||||||||||||||||||||||||||");
         File arch6 = new File("result.txt");
-        try {
+        /*try {
             BufferedReader leer = new BufferedReader(new FileReader(arch6));
             String linea = leer.readLine();
             while (linea != null) {
@@ -1036,7 +1038,13 @@ public class Principal extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+        salida.setText("");        
+        Proceso proceso = new Proceso(salida);
+        if (proceso.isAlive()) {
+            proceso.interrupt();
         }
+        proceso.start();
         System.out.println("En toeria ya termino");
     }//GEN-LAST:event_RunBottomActionPerformed
 

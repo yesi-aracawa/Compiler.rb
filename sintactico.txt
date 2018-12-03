@@ -1,13 +1,16 @@
-programa
- 
- :=
-  a
-  1
- :=
-  b
-  2
- :=
-  c
-  +
-   a
-   b
+programa
+ integer
+  c
+  r
+  m
+ :=
+  c
+  5
+ :=
+  r
+  4
+ :=
+  m
+  +
+   c
+   r
