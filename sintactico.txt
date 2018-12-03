@@ -1,16 +1,8 @@
 programa
  integer
-  c
-  r
-  m
- :=
-  c
-  5
- :=
-  r
-  4
- :=
-  m
-  +
-   c
-   r
+  s
+ read
+  s
+ write
+  Tu dato es: 
+  s

@@ -7,6 +7,8 @@
 # /* Kenneth C. Louden                                     */
 # /*********************************************************/
 require './semantica'
+$stdout.sync = true
+
 # tmpOffset es el desplazamiento de memoria para elementos temporales
 #  se decrementa cada vez que un elemento temporal es
 #  almacenado, y se incrementa cuando se carga de nuevo

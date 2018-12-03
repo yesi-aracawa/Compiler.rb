@@ -153,7 +153,6 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane_VentanaErrores.addTab("Errores Léxicos", jPanel1);
 
-        salida.setEditable(false);
         salida.setColumns(20);
         salida.setRows(5);
         jScrollPane8.setViewportView(salida);
@@ -1041,9 +1040,6 @@ public class Principal extends javax.swing.JFrame {
         }*/
         salida.setText("");        
         Proceso proceso = new Proceso(salida);
-        if (proceso.isAlive()) {
-            proceso.interrupt();
-        }
         proceso.start();
         System.out.println("En toeria ya termino");
     }//GEN-LAST:event_RunBottomActionPerformed

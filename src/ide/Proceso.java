@@ -14,6 +14,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -21,65 +25,53 @@ import javax.swing.JTextArea;
  * @author rockt
  */
 public class Proceso extends Thread {
-     public JTextArea txt;
-    public String salida = "";
-    BufferedWriter w;
-    BufferedReader r;
+    public JTextArea txt;
     String resp;
 
     public Proceso(JTextArea txt) {
         this.txt = txt;
-        txt.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                salida += Character.toString(e.getKeyChar());
-                //System.out.println(salida);
-                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    try {
-                        w.write(salida);
-                        w.flush();
-                        salida = "";
-                    } catch (IOException ex) {
-                        System.out.println("Ocurrio excepcion");
-                        System.err.println(ex.getMessage());
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
     }
 
     @Override
     public void run() {
+        System.out.println("EJECUTANDO");
+        ProcessBuilder builder = new ProcessBuilder("ruby", "C:\\Users\\yesi\\Projects\\Git\\compilador\\cm.rb");
+        builder.redirectErrorStream(true);
+        builder.redirectOutput();
+        builder.redirectInput();
+        
         try {
-            ProcessBuilder builder = new ProcessBuilder("ruby", "C:\\Users\\yesi\\Projects\\Git\\compilador\\cm.rb");
-            Process p = builder.start();
+            Process process = builder.start();
+            OutputStream stdin = process.getOutputStream();
+            InputStream stdout = process.getInputStream();
 
-            r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            w = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-            
-            resp = r.readLine();
-            while (resp != null) {
-                if ("read".equals(resp)) {
-                    txt.append(resp + "\n");
-                    resp = r.readLine();
-                } else {
-                    txt.append(resp + "\n");
-                    resp = r.readLine();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdin));
+                        String line;
+
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line.equals("read"));
+                if (line.equals("read")) {
+                    String input = JOptionPane.showInputDialog("Ingrese su dato: ");
+                    writer.write(input + "\n");
+                    writer.flush();
+                }else if (line.equals("exit")){
+                    break;
+                }else{
+                     txt.append(line + "\n");
+ //                    String aux = txt.getText();
+   //                  txt.setText(aux + line);
+                     System.out.println(line);
                 }
-            }
+               
+            }         
+            
+            System.out.println("estoy fuera");
+            
+
             
         } catch (IOException ex) {
-            System.err.println(ex.getMessage());
-        } catch (Throwable ex) {
-            System.err.println(ex.getMessage());
-        }
+            Logger.getLogger(Proceso.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }

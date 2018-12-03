@@ -90,7 +90,6 @@ class Maquina
   end
 
   def ejecutarPaso
-    print '.'
     pc = @reg[@PC_REG]
     @reg[@PC_REG] = pc + 1
 
@@ -109,7 +108,7 @@ class Maquina
     end
 
     if current_line[:opcode] == 'HALT'
-      print current_line[:opcode] + ' ' + r.to_s + ' ' + s.to_s + ' ' + t.to_s
+      print current_line[:opcode] + ' ' + r.to_s + ' ' + s.to_s + ' ' + t.to_s + "\n"
       return 'HALT'
     elsif current_line[:opcode] == 'ADD'
       @reg[r.to_i] = @reg[s.to_i] + @reg[t.to_i]
@@ -161,10 +160,11 @@ class Maquina
         @reg[@PC_REG] = m.to_i
       end
     elsif current_line[:opcode] == 'IN'
-      print 'CIN>>'
+      print "read\n"
       # excepcion
       begin
         dato = gets # a la espera de la escritura
+        print "read>>: #{dato}\n"
         # tipo = @hash.get()
         # si es de tipo float
         if dato.class == Float
@@ -179,12 +179,14 @@ class Maquina
     elsif current_line[:opcode] == 'OUT'
       b = current_line[:r].to_i
       # @reg[@PC_REG] = m.to_i
-      puts 'OUT>> ' + (@reg[b]).to_s # envia la salida
+      puts 'write<<: ' + (@reg[b]).to_s + "\n"# envia la salida
     end
 
     return 'OKAY'
   end
 end
+
 maquina = Maquina.new
 maquina.cargaInstrucciones('code_interm.txt')
 maquina.inicio
+print "exit\n"
