@@ -10,9 +10,7 @@ import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import javax.swing.JTextArea;
 
@@ -20,14 +18,15 @@ import javax.swing.JTextArea;
  *
  * @author rockt
  */
-public class Proceso extends Thread {
-     public JTextArea txt;
+public class Proceso2 extends Thread {
+
+    public JTextArea txt;
     public String salida = "";
     BufferedWriter w;
     BufferedReader r;
     String resp;
 
-    public Proceso(JTextArea txt) {
+    public Proceso2(JTextArea txt) {
         this.txt = txt;
         txt.addKeyListener(new KeyListener() {
             @Override
@@ -59,7 +58,7 @@ public class Proceso extends Thread {
     @Override
     public void run() {
         try {
-            ProcessBuilder builder = new ProcessBuilder("ruby", "C:\\Users\\yesi\\Projects\\Git\\compilador\\cm.rb");
+            ProcessBuilder builder = new ProcessBuilder("ruby", "C:\\Users\\yesi\\Projects\\Git\\compilador\\main.rb");
             Process p = builder.start();
 
             r = new BufferedReader(new InputStreamReader(p.getInputStream()));

@@ -4,6 +4,7 @@
 # * Construccidn de compiladores: principios y practica   *
 # * Kenneth C. Louden                                     *
 # *********************************************************
+$stdout.sync = true
 
 class Maquina #acceso a metodos protegidos
   attr_accessor :IADDR_SIZE
@@ -174,3 +175,6 @@ class Maquina #acceso a metodos protegidos
     return 'OKAY'
   end
 end
+maquina = Maquina.new
+maquina.cargaInstrucciones('code_interm.txt')
+maquina.inicio
