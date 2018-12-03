@@ -1,8 +1,32 @@
 programa
  integer
-  s
+  x
+  fact
  read
-  s
- write
-  Tu dato es: 
-  s
+  x
+ if
+  <
+   0
+   x
+  {
+   :=
+    fact
+    1
+   do
+    {
+     :=
+      fact
+      *
+       fact
+       x
+     :=
+      x
+      -
+       x
+       1
+    ==
+     x
+     0
+   write
+    
+    fact

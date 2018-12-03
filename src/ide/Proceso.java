@@ -50,11 +50,10 @@ public class Proceso extends Thread {
                         String line;
 
             while ((line = reader.readLine()) != null) {
-                System.out.println(line.equals("read"));
                 if (line.equals("read")) {
-                    String input = JOptionPane.showInputDialog("Ingrese su dato: ");
-                    writer.write(input + "\n");
-                    writer.flush();
+                    //String input = JOptionPane.showInputDialog("Ingrese su dato: ");
+                    //writer.write(input + "\n");
+                   // writer.flush();
                 }else if (line.equals("exit")){
                     break;
                 }else{

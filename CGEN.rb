@@ -68,178 +68,195 @@ class Codegen
   # Genarador de codigo recursivo interno
   def postorden(func, nodo)
     return if nodo.nil?
-
-    unless nodo.hijos.nil?
-      nodo.hijos.each do |hijo|
-        postorden(func, hijo)
-      end
-    end
-    send(func, nodo) unless nodo.nil?
-  end
-
-  # genera codigo para un nodo de sentencia
-  def gen_stmt(nodo)
+    return if nodo['token'].nil?
+    
     case nodo.token['val']
     when 'if' # distingue entre las clases de sentencia
       emit_comment('-> if')
       postorden(:gen_exp, nodo['hijos'][0]) # realiza llamadas recursivas a c_gen
-      saved_loc1 = emit_skip(1)
+      # saved_loc1 = emit_skip(1)
       emit_comment('if: jump to else belongs here')
 
       postorden(:gen_stmt, nodo['hijos'][1])
-      saved_loc2 = emit_skip(1)
-      emit_comment('if: jump to end belongs here')
-      current_loc = emit_skip(0)
-      emit_backup(saved_loc1)
-      emit_RM_Abs('JEQ', @ac, current_loc, 'if: jmp to else')
-      emit_restore
+      postorden(:gen_stmt, nodo['hijos'][2]) unless nodo['hijos'][2].nil?
+      return
+      # saved_loc2 = emit_skip(1)
+      # emit_comment('if: jump to end belongs here')
+      # current_loc = emit_skip(0)
+      # emit_backup(saved_loc1)
+      # emit_RM_Abs('JEQ', @ac, current_loc, 'if: jmp to else')
+      # emit_restore
 
-      postorden(:gen_stmt, nodo['hijos'][2])
-      current_loc = emit_skip(0)
-      emit_backup(saved_loc2)
-      emit_RM_Abs('LDA', @pc, current_loc, 'jmp to end')
-      emit_restore
-      emit_comment('<- if')
+      # postorden(:gen_stmt, nodo['hijos'][2])
+      # current_loc = emit_skip(0)
+      # emit_backup(saved_loc2)
+      # emit_RM_Abs('LDA', @pc, current_loc, 'jmp to end')
+      # emit_restore
+      # emit_comment('<- if')
     when 'do'
-      emit_comment('-> do')
-      saved_loc1 = emit_skip(0)
-      emit_comment('do: jump after body comes back here')
+      #emit_comment('-> do')
+      #saved_loc1 = emit_skip(0)
+      #emit_comment('do: jump after body comes back here')
       postorden(:gen_stmt, nodo['hijos'][0])
       postorden(:gen_exp, nodo['hijos'][1])
-      emit_RM_Abs('JEQ', @ac, saved_loc1, 'do: jmp back to body')
-      emit_comment('<- do')
+      #emit_RM_Abs('JEQ', @ac, saved_loc1, 'do: jmp back to body')
+      #emit_comment('<- do')
+      return
     when 'while'
-      loc1 = emit_skip(0)
+      # loc1 = emit_skip(0)
       postorden(:gen_exp, nodo['hijos'][0])
-
-      loc2 = emit_skip(1)
       postorden(:gen_stmt, nodo['hijos'][1])
-      current_loc = emit_skip(0)
-      emit_backup(loc2)
-      emit_RM_Abs('JEQ', @ac, (current_loc + 1), '')
+      return
+    end
+
+     # loc2 = emit_skip(1)
+     # postorden(:gen_stmt, nodo['hijos'][1])
+     #  current_loc = emit_skip(0)
+      # emit_backup(loc2)
+      # emit_RM_Abs('JEQ', @ac, (current_loc + 1), '')
       # if fBreak:
       #    emit_backup(b)
       #    emit_RM_Abs('LDA', @pc, (current_loc + 1))
       #    fBreak = False
-      emit_restore
-      emit_RM_Abs('LDA', @pc, loc1, '')
+      send(func, nodo) unless nodo.nil?
+    end
+     # emit_restore
+      #emit_RM_Abs('LDA', @pc, loc1, '')
+      def gen_stmt(nodo)
+        case nodo.token['val']
     when 'read'
+        # LDA
       emit_RO('IN', @ac, 0, 0, 'read integer value')
       # TODO: print HaAsh.st_lookup(nodo.attr), 'hellow', nodo.attr
       # TODO: loc = HaAsh.st_lookup(nodo.attr)
-      # TODO: emit_RM('ST', @ac, loc, @gp, 'read: store value')
+      emit_RM('ST', @ac, 0, @gp, 'read: store value')
     when 'write'
-      postorden(:gen_exp, nodo['hijos'][0])
+      nodo.hijos.each do |hijo|
+        postorden(:gen_exp, hijo)
+      end
       emit_RO('OUT', @ac, 0, 0, 'write ac')
       # when 'bloque'
       #   c_gen(nodo['hijos'][0])
     else
       if nodo.token.val == ':='
         emit_comment('-> assign')
-        postorden(:gen_exp, nodo['hijos'][0])
+        emit_RM_Abs('LDA', @pc, 0, '')
         postorden(:gen_exp, nodo['hijos'][1])
+        emit_RM('ST', @ac, 0, @gp, 'store value')
         # TODO: loc = HaAsh.st_lookup(nodo.attr)
         # TODO: emit_RM('ST', @ac, loc, @gp, 'assign: store value')
-        emit_comment('<- assign')
-      else
+      elsif nodo.token['val'] == '{'
+        nodo.hijos.each do |hijo|
+          postorden(:gen_stmt, hijo)
+        end
+      end
         # print nodo.token['val']
       end
     end
-  end
 
   # genera un codigo para un nodo de expresion
   def gen_exp(nodo)
-    # loc = 0
-    # p1 = 0
-    # p2 = 0
-    case nodo.token.tipo
-    when 'identificador'
-      emit_comment('-> Ident')
-      emit_RM('LDA', @ac, 123, 0, 'load Id')
-    when 'cadena'
-      # TODO: jkj
-      emit_comment('-> Const')
-      # genera el codigo para cargar constante
-      emit_RM('LDC', @ac, 123, 0, 'load const')
-      emit_comment('<- Const')
-    when 'booleano'
-      emit_comment('-> Const')
-      emit_RM('LDC', @ac, nodo.token.val, 0, 'load const')
-      emit_comment('<- Const')
-    when 'real', 'entero'
-      emit_comment('<- Const')
-      # genera el codigo para cargar constante
-      emit_RM('LDC', @ac, nodo.token.val, 0, 'load const')
-      emit_comment('<- Const')
-    else
-      emit_comment('-> Op')
-      postorden(:gen_exp, nodo['hijos'][0]) # argumento izquierdo
-      # insertar operando izquierdo
-      emit_RM('ST', @ac, @tmp_offset, @mp, 'op: push left')
-      @tmp_offset -= 1
-
-      postorden(:gen_exp, nodo['hijos'][1]) # operando derecho
-      @tmp_offset += 1
-      # cargar operando izquierdo
-      emit_RM('LD', @ac1, @tmp_offset, @mp, 'op: load left')
-
+   
       case nodo.token.val
       when '+'
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('ADD', @ac, @ac1, @ac, 'op +')
       when '++'
         postorden(:gen_exp, nodo['hijos'][0])
       when '-'
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('SUB', @ac, @ac1, @ac, 'op -')
+      when '--'
+        postorden(:gen_exp, nodo['hijos'][0])
       when '*'
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('MUL', @ac, @ac1, @ac, 'op *')
       when '/'
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('DIV', @ac, @ac1, @ac, 'op /')
       when '%'
-        # TODO: como manejar esta instruccion
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('MOD', @ac, @ac1, @ac, 'op %')
       when '<'
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('SUB', @ac, @ac1, @ac, 'op <')
         emit_RM('JLT', @ac, 2, @pc, 'br if true')
         emit_RM('LDC', @ac, 0, @ac, 'false case')
         emit_RM('LDA', @pc, 1, @pc, 'unconditional jmp')
         emit_RM('LDC', @ac, 1, @ac, 'true case')
       when '<='
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('SUB', @ac, @ac1, @ac, 'op <=')
         emit_RM('JLE', @ac, 2, @pc, 'br if true')
         emit_RM('LDC', @ac, 0, @ac, 'false case')
         emit_RM('LDA', @pc, 1, @pc, 'unconditional jmp')
         emit_RM('LDC', @ac, 1, @ac, 'true case')
       when '>'
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('SUB', @ac, @ac1, @ac, 'op >')
         emit_RM('JGT', @ac, 2, @pc, 'br if true')
         emit_RM('LDC', @ac, 0, @ac, 'false case')
         emit_RM('LDA', @pc, 1, @pc, 'unconditional jmp')
         emit_RM('LDC', @ac, 1, @ac, 'true case')
       when '>='
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('SUB', @ac, @ac1, @ac, 'op >=')
         emit_RM('JGE', @ac, 2, @pc, 'br if true')
         emit_RM('LDC', @ac, 0, @ac, 'false case')
         emit_RM('LDA', @pc, 1, @pc, 'unconditional jmp')
         emit_RM('LDC', @ac, 1, @ac, 'true case')
       when '=='
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('SUB', @ac, @ac1, @ac, 'op ==')
         emit_RM('JEQ', @ac, 2, @pc, 'br if true')
         emit_RM('LDC', @ac, 0, @ac, 'false case')
         emit_RM('LDA', @pc, 1, @pc, 'unconditional jmp')
         emit_RM('LDC', @ac, 1, @ac, 'true case')
       when '!='
+        postorden(:gen_exp, nodo['hijos'][0])
+        postorden(:gen_exp, nodo['hijos'][1])
         emit_RO('SUB', @ac, @ac1, @ac, 'op !=')
         emit_RM('JNE', @ac, 2, @pc, 'br if true')
         emit_RM('LDC', @ac, 0, @ac, 'false case')
         emit_RM('LDA', @pc, 1, @pc, 'unconditional jmp')
         emit_RM('LDC', @ac, 1, @ac, 'true case')
       else
+        case nodo.token.tipo
+        when 'identificador'
+          # emit_comment('-> Ident')
+          emit_RM('LOD', @ac, 0, 0, 'load Id')
+        when 'cadena'
+          # TODO: jkj
+          # emit_comment('-> Const')
+          # genera el codigo para cargar constante
+          emit_RM('LDC', @ac, 0, 0, 'load const')
+          # emit_comment('<- Const')
+        when 'booleano'
+          # emit_comment('-> Const')
+          emit_RM('LDC', @ac, nodo.token.val, 0, 'load const')
+          # emit_comment('<- Const')
+        when 'real', 'entero'
+          # emit_comment('<- Const')
+          # genera el codigo para cargar constante
+          emit_RM('LDC', @ac, nodo.token.val, 0, 'load const')
+          # emit_comment('<- Const')
+        else
         puts 'Error: ' + nodo.token
         exit
         # emit_comment('BUG: Unknown operator')
       end
-      
-      emit_comment('<- Op') if @flag
+       # emit_comment('BUG: Unknown operator')
+      # emit_comment('<- Op') if @flag
     end
   end
 

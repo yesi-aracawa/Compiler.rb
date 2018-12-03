@@ -1,5 +1,8 @@
 Error de asignación de valor en: integer Linea: 2
 Error de asignación de valor en: read Linea: 3
-Error de asignación de valor en: Tu dato es:  Linea: 4
-Error de asignación de valor en: write Linea: 4
+Error de asignación de valor en: { Linea: 6
+Error de asignación de valor en: do Linea: 6
+Error de asignación de valor en: write Linea: 10
+Error de asignación de valor en: { Linea: 4
+Error de asignación de valor en: if Linea: 4
 Error de asignación de valor en: programa Linea: 1

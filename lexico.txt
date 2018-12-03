@@ -1,5 +1,12 @@
-main {
-integer s;
-read s;
-write "Tu dato es: ",s;
+main{
+	integer x, fact;
+	read x;
+	if (0 < x) then{
+		fact := 1;
+		do{
+  			fact := fact * x;
+    			x := x - 1;	    
+  		}until (x == 0);
+		write "", fact;
+	}
 }

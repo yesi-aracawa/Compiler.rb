@@ -16,7 +16,7 @@ class Semantica
 
   Nast = Struct.new(:padre, :hijos, :token, :gram, :dato, :val) do
     def to_s
-      return token['val'] + " " + dato.to_s + "(" + val.to_s + ")"
+      return token['val'].to_s + " " + dato.to_s + "(" + val.to_s + ")"
     end
   end
 
@@ -162,7 +162,7 @@ class Semantica
     elsif realiza_op?(este)# es un operador? hacer operacion
     
     else
-      $error_sem = $error_sem + "Error de asignación de valor en: " + este['token']['val'] + " Linea: " + este['token']['lin'].to_s + "\n"
+      $error_sem += "Error de asignación de valor en: " + este['token']['val'].to_s + " Linea: " + este['token']['lin'].to_s + "\n"
     end
   end
 
@@ -277,9 +277,9 @@ class Semantica
   def copia_arbol(nodo, padre)
     este = Nast.new(padre, [], nodo['token'], nodo['gram'], nil, nil)
 
-    nodo['hijos'].each do | hijo |
+    nodo['hijos'].each do |hijo|
       # TODO: eliminar nodos fantasma
-      if hijo['token']['val'] != ""
+      if hijo['token'] != nil && hijo['token']['val'] != ''
         este['hijos'].push(copia_arbol(hijo, este))
       end
     end
